@@ -34,7 +34,6 @@ var TourSchema = mongoose.Schema({
     ref: "User",
   },
 });
-
 var Tour = mongoose.model("Tour", TourSchema);
 
 function validateTour(data) {

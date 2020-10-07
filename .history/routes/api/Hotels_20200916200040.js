@@ -2,37 +2,6 @@ var express = require("express");
 const validateHotel = require("../../middlewares/validateHotel");
 let router = express.Router();
 var { Hotel } = require("../../models/hotels");
-const multer = require("multer");
-const { request } = require("../../app");
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/images");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  },
-});
-
-const filefilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/png"
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-//const upload = multer({ dest: "uploads/" });
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
-  },
-  fileFilter: filefilter,
-});
 
 /* GET hotels listing. */
 router.get("/", async (req, res) => {
@@ -61,7 +30,7 @@ router.put("/:id", validateHotel, async (req, res) => {
   let hotel = await Hotel.findById(req.params.id);
   hotel.Hotel_Name = req.body.Hotel_Name;
   hotel.Location = req.body.Location;
-  hotel.Images = req.file.path;
+  hotel.Images = req.body.Images;
   hotel.Address = req.body.Address;
   hotel.Contact_No = req.body.Contact_No;
   hotel.Check_in_time = req.body.Check_in_time;
@@ -81,11 +50,11 @@ router.delete("/:id", async (req, res) => {
 });
 
 /* Insert Record */
-router.post("/", upload.single("Images"), validateHotel, async (req, res) => {
+router.post("/", validateHotel, async (req, res) => {
   let hotel = new Hotel();
   hotel.Hotel_Name = req.body.Hotel_Name;
   hotel.Location = req.body.Location;
-  hotel.Images = req.file.path;
+  hotel.Images = req.body.Images;
   hotel.Address = req.body.Address;
   hotel.Contact_No = req.body.Contact_No;
   hotel.Check_in_time = req.body.Check_in_time;

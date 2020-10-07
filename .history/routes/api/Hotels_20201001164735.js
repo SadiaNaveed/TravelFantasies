@@ -81,11 +81,11 @@ router.delete("/:id", async (req, res) => {
 });
 
 /* Insert Record */
-router.post("/", upload.single("Images"), validateHotel, async (req, res) => {
+router.post("/", validateHotel, async (req, res) => {
   let hotel = new Hotel();
   hotel.Hotel_Name = req.body.Hotel_Name;
   hotel.Location = req.body.Location;
-  hotel.Images = req.file.path;
+  hotel.Images = req.body.Images;
   hotel.Address = req.body.Address;
   hotel.Contact_No = req.body.Contact_No;
   hotel.Check_in_time = req.body.Check_in_time;

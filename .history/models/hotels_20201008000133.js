@@ -5,9 +5,11 @@ const { ValidationError } = require("@hapi/joi");
 var HotelSchema = mongoose.Schema({
   Hotel_Name: String,
   Location: String,
-  ImageName: String,
-  ImageData: String,
-  //Images: String,
+  // Images: {
+  //   type: String,
+  //   required: true,
+  // },
+  Images: string,
   Address: String,
   Contact_No: String,
   Check_in_time: String,
@@ -23,8 +25,7 @@ function validateHotel(data) {
   const schema = Joi.object({
     Hotel_Name: Joi.string(),
     Location: Joi.string(),
-    ImageName: Joi.string(),
-    ImageData: Joi.string(),
+    Images: Joi.string(),
     Address: Joi.string(),
     Contact_No: Joi.string(),
     Check_in_time: Joi.string(),

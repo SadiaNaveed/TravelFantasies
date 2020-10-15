@@ -3,14 +3,14 @@ const validateHotel = require("../../middlewares/validateHotel");
 let router = express.Router();
 var { Hotel } = require("../../models/hotels");
 const multer = require("multer");
-const { request, response } = require("../../app");
+const { request } = require("../../app");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images/hotels");
+    cb(null, "./public/images");
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, Date.now() + file.originalname);
   },
 });
 
@@ -32,23 +32,8 @@ const upload = multer({
     fileSize: 1024 * 1024 * 5,
   },
   fileFilter: filefilter,
-}).any('file');
-const params = {
-  '/single': 'file',
-  '/multiple': 'files'
-};
+});
 
-function validate(req, res, next) {
-  let param = params[req.url];
-  if (!req[param]) {
-    return res.send({
-      errors: {
-        message: `${param} cant be empty`
-      }
-    });
-  }
-  next();
-}
 /* GET hotels listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -76,8 +61,7 @@ router.put("/:id", validateHotel, async (req, res) => {
   let hotel = await Hotel.findById(req.params.id);
   hotel.Hotel_Name = req.body.Hotel_Name;
   hotel.Location = req.body.Location;
-  hotel.ImageName = req.body.ImageName;
-  hotel.ImageData = req.body.ImageData;
+  hotel.Images = req.file.path;
   hotel.Address = req.body.Address;
   hotel.Contact_No = req.body.Contact_No;
   hotel.Check_in_time = req.body.Check_in_time;
@@ -98,35 +82,21 @@ router.delete("/:id", async (req, res) => {
 // upload.single("Images"),
 /* Insert Record */
 // validateHotel;
-router.post("/", upload.array('files', 10), async (req, res) => {
-  try {
-    const hotel = new Hotel();
-    // if (req.files == null) {
-    //   return res.status(400).send("No file is uploaded");
-    // }
-  
-    console.log(req.body);
-    console.log(req.body.File);
-    hotel.Hotel_Name = req.body.HotelName;
-    hotel.Location = req.body.Location;
-    hotel.ImageName = req.body.ImageName;
-    hotel.ImageData = "C:/Users/sidra/Desktop/Backend/travel/public/images/hotels/" +req.body.file.name;
-    // hotel.Images = req.body.Image;
-    hotel.Address = req.body.Address;
-    hotel.Contact_No = req.body.Contactno;
-    hotel.Check_in_time = req.body.CheckIn;
-    hotel.Check_out_time = req.body.CheckOut;
-    hotel.Website = req.body.Website;
-    hotel.Facilities = req.body.Facilities;
-    hotel.Availability_status = req.body.Availability;
-    hotel.Overall_Rating = req.body.Ratings;
-    await hotel.save();
-    // return res.send(hotel);
-    return res.send("data");
-  } catch (error) {
-    console.log(error);
-    res.send(error.message);
-  }
-  //res.json({ filename: file.name, filePath: `/uploads/${file.name}` });
+router.post("/", upload.single("Images") async (req, res) => {
+  let hotel = new Hotel();
+  hotel.Hotel_Name = req.body.HotelName;
+  hotel.Location = req.body.Location;
+  hotel.Images = req.file.path;
+  //hotel.Images = req.body.Image;
+  hotel.Address = req.body.Address;
+  hotel.Contact_No = req.body.Contactno;
+  hotel.Check_in_time = req.body.CheckIn;
+  hotel.Check_out_time = req.body.CheckOut;
+  hotel.Website = req.body.Website;
+  hotel.Facilities = req.body.Facilities;
+  hotel.Availability_status = req.body.Availability;
+  hotel.Overall_Rating = req.body.Ratings;
+  await hotel.save();
+  return res.send(hotel);
 });
 module.exports = router;

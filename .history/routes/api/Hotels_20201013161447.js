@@ -7,10 +7,10 @@ const { request, response } = require("../../app");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images/hotels");
+    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images");
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, Date.now() + file.originalname);
   },
 });
 
@@ -32,30 +32,15 @@ const upload = multer({
     fileSize: 1024 * 1024 * 5,
   },
   fileFilter: filefilter,
-}).any('file');
-const params = {
-  '/single': 'file',
-  '/multiple': 'files'
-};
+}).array('file');
 
-function validate(req, res, next) {
-  let param = params[req.url];
-  if (!req[param]) {
-    return res.send({
-      errors: {
-        message: `${param} cant be empty`
-      }
-    });
-  }
-  next();
-}
 /* GET hotels listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 10);
   let skipRecords = perPage * (page - 1);
-  let hotels = await Hotel.find().skip(skipRecords).limit(perPage);
+  let hotels = await Hotel.find('HotelName').skip(skipRecords).limit(perPage);
   return res.send(hotels);
 });
 
@@ -77,7 +62,7 @@ router.put("/:id", validateHotel, async (req, res) => {
   hotel.Hotel_Name = req.body.Hotel_Name;
   hotel.Location = req.body.Location;
   hotel.ImageName = req.body.ImageName;
-  hotel.ImageData = req.body.ImageData;
+  //hotel.ImageData = req.body.ImageData;
   hotel.Address = req.body.Address;
   hotel.Contact_No = req.body.Contact_No;
   hotel.Check_in_time = req.body.Check_in_time;
@@ -98,19 +83,18 @@ router.delete("/:id", async (req, res) => {
 // upload.single("Images"),
 /* Insert Record */
 // validateHotel;
-router.post("/", upload.array('files', 10), async (req, res) => {
+router.post("/", upload("file"), async (req, res) => {
   try {
     const hotel = new Hotel();
     // if (req.files == null) {
     //   return res.status(400).send("No file is uploaded");
     // }
-  
     console.log(req.body);
     console.log(req.body.File);
     hotel.Hotel_Name = req.body.HotelName;
     hotel.Location = req.body.Location;
     hotel.ImageName = req.body.ImageName;
-    hotel.ImageData = "C:/Users/sidra/Desktop/Backend/travel/public/images/hotels/" +req.body.file.name;
+    hotel.ImageData = req.body.file;
     // hotel.Images = req.body.Image;
     hotel.Address = req.body.Address;
     hotel.Contact_No = req.body.Contactno;

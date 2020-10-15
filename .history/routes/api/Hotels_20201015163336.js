@@ -33,22 +33,7 @@ const upload = multer({
   },
   fileFilter: filefilter,
 }).any('file');
-const params = {
-  '/single': 'file',
-  '/multiple': 'files'
-};
 
-function validate(req, res, next) {
-  let param = params[req.url];
-  if (!req[param]) {
-    return res.send({
-      errors: {
-        message: `${param} cant be empty`
-      }
-    });
-  }
-  next();
-}
 /* GET hotels listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);

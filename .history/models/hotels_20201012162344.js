@@ -6,7 +6,7 @@ var HotelSchema = mongoose.Schema({
   Hotel_Name: String,
   Location: String,
   ImageName: String,
-  ImageData: String,
+  ImageData: String
   //Images: String,
   Address: String,
   Contact_No: String,

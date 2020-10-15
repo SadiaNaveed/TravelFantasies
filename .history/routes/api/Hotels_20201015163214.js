@@ -33,22 +33,7 @@ const upload = multer({
   },
   fileFilter: filefilter,
 }).any('file');
-const params = {
-  '/single': 'file',
-  '/multiple': 'files'
-};
 
-function validate(req, res, next) {
-  let param = params[req.url];
-  if (!req[param]) {
-    return res.send({
-      errors: {
-        message: `${param} cant be empty`
-      }
-    });
-  }
-  next();
-}
 /* GET hotels listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -98,7 +83,7 @@ router.delete("/:id", async (req, res) => {
 // upload.single("Images"),
 /* Insert Record */
 // validateHotel;
-router.post("/", upload.array('files', 10), async (req, res) => {
+router.post("/", upload.any('file',3), async (req, res) => {
   try {
     const hotel = new Hotel();
     // if (req.files == null) {

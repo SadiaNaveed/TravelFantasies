@@ -107,17 +107,18 @@ router.post("/", upload.single('file'), validateHotel, async (req, res) => {
     const hotel = new Hotel();
     console.log(req.body);
     console.log(req.file);
-    hotel.HotelName = req.body.HotelName;
+    hotel.Hotel_Name = req.body.HotelName;
     hotel.Location = req.body.Location;
     hotel.Image.data = fs.readFileSync(req.file.path);
     hotel.Image.contentType = req.file.mimetype;
     hotel.Address = req.body.Address;
-    hotel.Contactno = req.body.Contactno;
+    hotel.Contact_No = req.body.Contactno;
     hotel.Website = req.body.Website;
     hotel.Facilities = req.body.Facilities;
-    hotel.Status = req.body.Status;
+    hotel.Availability_status = req.body.Availability;
     hotel.Cost = req.body.Cost;
     hotel.Ratings = 0;
+
     await hotel.save();
     // return res.send(hotel);
     return res.send("data");

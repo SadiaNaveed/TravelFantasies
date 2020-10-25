@@ -58,8 +58,7 @@ router.get("/", async (req, res) => {
   let perPage = Number(req.query.perPage ? req.query.perPage : 10);
   let skipRecords = perPage * (page - 1);
   //.skip(skipRecords).limit(perPage)
-  let hotels = await Hotel.find().skip(0).limit(perPage);
-  res.contentType('json');
+  let hotels = await Hotel.find().skip(skipRecords).limit(perPage);
   console.log(hotels);
   return res.send(hotels);
 });
@@ -81,15 +80,16 @@ router.put("/:id", validateHotel, async (req, res) => {
   let hotel = await Hotel.findById(req.params.id);
   hotel.Hotel_Name = req.body.Hotel_Name;
   hotel.Location = req.body.Location;
+  hotel.ImageName = req.body.ImageName;
+  hotel.ImageData = req.body.ImageData;
   hotel.Address = req.body.Address;
-  hotel.Image.data = fs.readFileSync(req.file.path);
-  hotel.Image.contentType = req.file.mimetype;
   hotel.Contact_No = req.body.Contact_No;
+  hotel.Check_in_time = req.body.Check_in_time;
+  hotel.Check_out_time = req.body.Check_out_time;
   hotel.Website = req.body.Website;
   hotel.Facilities = req.body.Facilities;
   hotel.Availability_status = req.body.Availability_status;
-  hotel.Cost = req.body.Cost;
-  hotel.Ratings = 0;
+  hotel.Overall_Rating = req.body.Overall_Rating;
   await hotel.save();
   return res.send(hotel);
 });
@@ -102,22 +102,29 @@ router.delete("/:id", async (req, res) => {
 // upload.single("Images"),
 /* Insert Record */
 // validateHotel;
-router.post("/", upload.single('file'), validateHotel, async (req, res) => {
+router.post("/", upload.single('file'), async (req, res) => {
   try {
     const hotel = new Hotel();
+    // if (req.files == null) {
+    //   return res.status(400).send("No file is uploaded");
+    // }
     console.log(req.body);
     console.log(req.file);
-    hotel.HotelName = req.body.HotelName;
+    hotel.Hotel_Name = req.body.HotelName;
     hotel.Location = req.body.Location;
+    hotel.ImageName = req.file.filename;
+    hotel.ImageData = req.file.path;
     hotel.Image.data = fs.readFileSync(req.file.path);
     hotel.Image.contentType = req.file.mimetype;
+    // hotel.Images = req.body.Image;
     hotel.Address = req.body.Address;
-    hotel.Contactno = req.body.Contactno;
+    hotel.Contact_No = req.body.Contactno;
+    hotel.Check_in_time = req.body.CheckIn;
+    hotel.Check_out_time = req.body.CheckOut;
     hotel.Website = req.body.Website;
     hotel.Facilities = req.body.Facilities;
-    hotel.Status = req.body.Status;
-    hotel.Cost = req.body.Cost;
-    hotel.Ratings = 0;
+    hotel.Availability_status = req.body.Availability;
+    hotel.Overall_Rating = req.body.Ratings;
     await hotel.save();
     // return res.send(hotel);
     return res.send("data");

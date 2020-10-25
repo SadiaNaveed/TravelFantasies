@@ -89,7 +89,6 @@ router.put("/:id", validateHotel, async (req, res) => {
   hotel.Facilities = req.body.Facilities;
   hotel.Availability_status = req.body.Availability_status;
   hotel.Cost = req.body.Cost;
-  hotel.Ratings = 0;
   await hotel.save();
   return res.send(hotel);
 });
@@ -102,22 +101,25 @@ router.delete("/:id", async (req, res) => {
 // upload.single("Images"),
 /* Insert Record */
 // validateHotel;
-router.post("/", upload.single('file'), validateHotel, async (req, res) => {
+router.post("/", upload.single('file'), async (req, res) => {
   try {
     const hotel = new Hotel();
+    // if (req.files == null) {
+    //   return res.status(400).send("No file is uploaded");
+    // }
     console.log(req.body);
     console.log(req.file);
-    hotel.HotelName = req.body.HotelName;
+    hotel.Hotel_Name = req.body.HotelName;
     hotel.Location = req.body.Location;
     hotel.Image.data = fs.readFileSync(req.file.path);
     hotel.Image.contentType = req.file.mimetype;
+    // hotel.Images = req.body.Image;
     hotel.Address = req.body.Address;
-    hotel.Contactno = req.body.Contactno;
+    hotel.Contact_No = req.body.Contactno;
     hotel.Website = req.body.Website;
     hotel.Facilities = req.body.Facilities;
-    hotel.Status = req.body.Status;
+    hotel.Availability_status = req.body.Availability;
     hotel.Cost = req.body.Cost;
-    hotel.Ratings = 0;
     await hotel.save();
     // return res.send(hotel);
     return res.send("data");

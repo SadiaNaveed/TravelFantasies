@@ -3,34 +3,34 @@ const Joi = require("@hapi/joi");
 const { ValidationError } = require("@hapi/joi");
 
 var HotelSchema = mongoose.Schema({
-  HotelName: String,
+  Hotel_Name: String,
   Location: String,
   Image: {
     data: Buffer,
     contentType: String
   },
   Address: String,
-  Contactno: String,
+  Contact_No: String,
   Website: String,
   Facilities: String,
-  Status: String,
+  Availability_status: String,
   Cost: Number,
-  Ratings: Number,
+Ratings: Number,
 
 });
 var Hotel = mongoose.model("Hotel", HotelSchema);
 
 function validateHotel(data) {
   const schema = Joi.object({
-    HotelName: Joi.string(),
+    Hotel_Name: Joi.string().required(),
     Location: Joi.string().required(),
     Address: Joi.string().required(),
-    Contactno: Joi.string(),
+    Contact_No: Joi.string().required(),
     Website: Joi.string().required(),
     Facilities: Joi.string().required(),
-    Status: Joi.string(),
-    Cost: Joi.number().required(),
-    Ratings: Joi.number(),
+    Availability_status: Joi.string().required(),
+    Cost: Joi.Number().required(),
+    Ratings: Joi.Number(),
   });
   return schema.validate(data, { abortEarly: false });
 }

@@ -115,7 +115,7 @@ router.post("/", upload.single('file'), validateHotel, async (req, res) => {
     hotel.Contactno = req.body.Contactno;
     hotel.Website = req.body.Website;
     hotel.Facilities = req.body.Facilities;
-    hotel.Status = req.body.Status;
+    hotel.Availability = req.body.Availability;
     hotel.Cost = req.body.Cost;
     hotel.Ratings = 0;
     await hotel.save();

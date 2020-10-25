@@ -13,7 +13,7 @@ var HotelSchema = mongoose.Schema({
   Contactno: String,
   Website: String,
   Facilities: String,
-  Status: String,
+  Availability: String,
   Cost: Number,
   Ratings: Number,
 
@@ -28,7 +28,7 @@ function validateHotel(data) {
     Contactno: Joi.string(),
     Website: Joi.string().required(),
     Facilities: Joi.string().required(),
-    Status: Joi.string(),
+    Availability: Joi.string(),
     Cost: Joi.number().required(),
     Ratings: Joi.number(),
   });

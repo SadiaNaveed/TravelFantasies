@@ -99,7 +99,7 @@ router.put("/:id", validateHotel, async (req, res) => {
 
 /* Delete Record */
 router.delete("/:id", async (req, res) => {
-  let hotel = await Hotel.findByIdAndDelete(req.params.id);
+  let hotel = await Tour.findByIdAndDelete(req.params.id);
   return res.send(hotel);
 });
 // upload.single("Images"),

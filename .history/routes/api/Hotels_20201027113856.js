@@ -5,7 +5,6 @@ let router = express.Router();
 var { Hotel } = require("../../models/hotels");
 const multer = require("multer");
 const { request, response } = require("../../app");
-const validateHotelCategory = require("../../middlewares/validateHotelCategory");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -99,13 +98,12 @@ router.put("/:id", validateHotel, async (req, res) => {
 
 /* Delete Record */
 router.delete("/:id", async (req, res) => {
-  let hotel = await Hotel.findByIdAndDelete(req.params.id);
+  let hotel = await Tour.findByIdAndDelete(req.params.id);
   return res.send(hotel);
 });
 // upload.single("Images"),
 /* Insert Record */
 // validateHotel;
-
 router.post("/", upload.single('file'), validateHotel, async (req, res) => {
   try {
     const hotel = new Hotel();

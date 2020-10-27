@@ -48,7 +48,7 @@ app.use("/api/hotels", hotelsRouter);
 app.use("/api/hotelBookings", hotelBookingRouter);
 app.use("/api/tourCategory", tourCategoryRouter);
 app.use("/api/places", placesRouter);
-app.use("/api/hotelCategory", hotelCategoryRouter);
+app.use("./api/hotelCategory", hotelCategoryRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

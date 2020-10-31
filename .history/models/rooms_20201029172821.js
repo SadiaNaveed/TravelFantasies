@@ -2,29 +2,28 @@ var mongoose = require("mongoose");
 const Joi = require("@hapi/joi");
 const { ValidationError } = require("@hapi/joi");
 
-var HotelSchema = mongoose.Schema({
-  HotelName: String,
-  Location: String,
+var RoomSchema = mongoose.Schema({
   Image: {
     data: Buffer,
     contentType: String
   },
   Category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "HotelCategory",
+    ref: "RoomCategory",
     },
-  Address: String,
-  Contactno: String,
-  Website: String,
-  Facilities: String,
-  Status: String,
+  HotelId: {
+       type: mongoose.Schema.Types.ObjectId,
+    ref: "Hotel",
+    },
+    Description: String,
+    NumberOfRooms: Number,
   Cost: Number,
-  Ratings: Number,
+  Facilities: [String],
 
 });
-var Hotel = mongoose.model("Hotel", HotelSchema);
+var Room = mongoose.model("Room", RoomSchema);
 
-function validateHotel(data) {
+function validateRoom(data) {
   const schema = Joi.object({
     HotelName: Joi.string(),
     Location: Joi.string().required(),
@@ -38,5 +37,5 @@ function validateHotel(data) {
   });
   return schema.validate(data, { abortEarly: false });
 }
-module.exports.Hotel = Hotel;
-module.exports.validate = validateHotel;
+module.exports.Room = Room;
+module.exports.validate = validateRoom;

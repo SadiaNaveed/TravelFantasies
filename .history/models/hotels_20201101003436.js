@@ -11,7 +11,7 @@ var HotelSchema = mongoose.Schema({
   },
   Category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "HotelCategory",
+    ref: "RoomCategory",
     },
   Address: String,
   Contactno: String,

@@ -1,63 +1,28 @@
 var express = require("express");
-const validateHotel = require("../../middlewares/validateHotel");
+const validateRoom = require("../../middlewares/validateRoom");
 const fs = require('fs');
 let router = express.Router();
-var { Hotel } = require("../../models/hotels");
+var { Room } = require("../../models/rooms");
 const multer = require("multer");
 const { request, response } = require("../../app");
-const validateHotelCategory = require("../../middlewares/validateHotelCategory");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images/hotels");
+    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images/rooms");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
   },
 });
 
-const filefilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/png"
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-
-
-//const upload = multer({ dest: "uploads/" });
 const upload = multer({
   storage: storage,
   limits: {
     fileSize: 1024 * 1024 * 5,
   },
-    fileFilter: filefilter,
 
 });
-//.any('file')
 
-
-// const params = {
-//   '/single': 'file',
-//   '/multiple': 'files'
-// };
-
-// function validate(req, res, next) {
-//   let param = params[req.url];
-//   if (!req[param]) {
-//     return res.send({
-//       errors: {
-//         message: `${param} cant be empty`
-//       }
-//     });
-//   }
-//   next();
-// }
 /* GET hotels listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -72,8 +37,6 @@ router.get("/", async (req, res) => {
 });
 
 /* GET single hotel . */
-
-
 router.get("/:id", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
   try {
@@ -88,18 +51,17 @@ router.get("/:id", async (req, res) => {
 /* Update Record */
 router.put("/:id", validateHotel, async (req, res) => {
   let hotel = await Hotel.findById(req.params.id);
-  hotel.HotelName = req.body.HotelName;
-    hotel.Category = req.body.Category;
-    hotel.Location = req.body.Location;
-    hotel.Image.data = fs.readFileSync(req.file.path);
-    hotel.Image.contentType = req.file.mimetype;
-    hotel.Address = req.body.Address;
-    hotel.Contactno = req.body.Contactno;
-    hotel.Website = req.body.Website;
-    hotel.Facilities = req.body.Facilities;
-    hotel.Status = req.body.Status;
-    hotel.Cost = req.body.Cost;
-    hotel.Ratings = 0;
+  hotel.Hotel_Name = req.body.Hotel_Name;
+  hotel.Location = req.body.Location;
+  hotel.Address = req.body.Address;
+  hotel.Image.data = fs.readFileSync(req.file.path);
+  hotel.Image.contentType = req.file.mimetype;
+  hotel.Contact_No = req.body.Contact_No;
+  hotel.Website = req.body.Website;
+  hotel.Facilities = req.body.Facilities;
+  hotel.Availability_status = req.body.Availability_status;
+  hotel.Cost = req.body.Cost;
+  hotel.Ratings = 0;
   await hotel.save();
   return res.send(hotel);
 });
@@ -107,19 +69,18 @@ router.put("/:id", validateHotel, async (req, res) => {
 /* Delete Record */
 router.delete("/:id", async (req, res) => {
   let hotel = await Hotel.findByIdAndDelete(req.params.id);
-  return res.send("Hotel has been Successfully Removed");
+  return res.send(hotel);
 });
 // upload.single("Images"),
 /* Insert Record */
 // validateHotel;
 
-router.post("/", upload.single('file'),  async (req, res) => {
+router.post("/", upload.single('file'), validateHotel, async (req, res) => {
   try {
     const hotel = new Hotel();
         // console.log(req.file);
     // console.log(req.body);
     hotel.HotelName = req.body.HotelName;
-    hotel.Category = req.body.Category;
     hotel.Location = req.body.Location;
     hotel.Image.data = fs.readFileSync(req.file.path);
     hotel.Image.contentType = req.file.mimetype;

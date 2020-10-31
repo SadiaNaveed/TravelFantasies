@@ -1,10 +1,10 @@
 var express = require("express");
 const fs = require('fs');
 let router = express.Router();
-var { HotelCategory } = require("../../models/hotelCategory");
+var { RoomCategory } = require("../../models/roomCategory");
 const multer = require("multer");
 const { request, response } = require("../../app");
-const validateHotelCategory = require("../../middlewares/validateHotelCategory");
+const validateRoomCategory = require("../../middlewares/validateRoomCategory");
 
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);

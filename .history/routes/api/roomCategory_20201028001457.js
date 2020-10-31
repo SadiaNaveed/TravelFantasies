@@ -1,10 +1,10 @@
 var express = require("express");
 const fs = require('fs');
 let router = express.Router();
-var { HotelCategory } = require("../../models/hotelCategory");
+var { RoomCategory } = require("../../models/roomCategory");
 const multer = require("multer");
 const { request, response } = require("../../app");
-const validateHotelCategory = require("../../middlewares/validateHotelCategory");
+const validateRoomCategory = require("../../middlewares/validateRoomCategory");
 
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
   let perPage = Number(req.query.perPage ? req.query.perPage : 10);
   let skipRecords = perPage * (page - 1);
   //.skip(skipRecords).limit(perPage)
-  let category = await HotelCategory.find().skip(0).limit(perPage);
+  let category = await RoomCategory.find().skip(0).limit(perPage);
   res.contentType('json');
   console.log(category);
   return res.send(category);
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
   try {
-    let hotel = await HotelCategory.findById(req.params.id);
+    let hotel = await RoomCategory.findById(req.params.id);
     if (!hotel)
       return res.status(400).send("Hotel with given ID is not present ");
     return res.send(hotel);
@@ -33,8 +33,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 /* Update Record */
-router.put("/:id", validateHotelCategory, async (req, res) => {
-  let hotel = await HotelCategory.findById(req.params.id);
+router.put("/:id", validateRoomCategory, async (req, res) => {
+  let hotel = await RoomCategory.findById(req.params.id);
   hotel.CategoryName = req.body.CategoryName;
   hotel.Description = req.body.Description;
   await hotel.save();
@@ -43,15 +43,15 @@ router.put("/:id", validateHotelCategory, async (req, res) => {
 
 /* Delete Record */
 router.delete("/:id", async (req, res) => {
-  let hotel = await HotelCategory.findByIdAndDelete(req.params.id);
+  let hotel = await RoomCategory.findByIdAndDelete(req.params.id);
   return res.send(hotel);
 });
-
-router.post("/", validateHotelCategory, async (req, res) => {
+// validateRoomCategory
+router.post("/", async (req, res) => {
   try {
 
     console.log(req.body);
-      const hotel = new HotelCategory();
+      const hotel = new RoomCategory();
     hotel.CategoryName = req.body.CategoryName;
     hotel.Description = req.body.Description;
   await hotel.save();

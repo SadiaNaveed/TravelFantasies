@@ -16,19 +16,6 @@ var storage = multer.diskStorage({
   },
 });
 
-const filefilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/png"
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-
 
 //const upload = multer({ dest: "uploads/" });
 const upload = multer({
@@ -36,16 +23,9 @@ const upload = multer({
   limits: {
     fileSize: 1024 * 1024 * 5,
   },
-    fileFilter: filefilter,
-
 });
 //.any('file')
 
-
-// const params = {
-//   '/single': 'file',
-//   '/multiple': 'files'
-// };
 
 // function validate(req, res, next) {
 //   let param = params[req.url];
@@ -88,18 +68,17 @@ router.get("/:id", async (req, res) => {
 /* Update Record */
 router.put("/:id", validateHotel, async (req, res) => {
   let hotel = await Hotel.findById(req.params.id);
-  hotel.HotelName = req.body.HotelName;
-    hotel.Category = req.body.Category;
-    hotel.Location = req.body.Location;
-    hotel.Image.data = fs.readFileSync(req.file.path);
-    hotel.Image.contentType = req.file.mimetype;
-    hotel.Address = req.body.Address;
-    hotel.Contactno = req.body.Contactno;
-    hotel.Website = req.body.Website;
-    hotel.Facilities = req.body.Facilities;
-    hotel.Status = req.body.Status;
-    hotel.Cost = req.body.Cost;
-    hotel.Ratings = 0;
+  hotel.Hotel_Name = req.body.Hotel_Name;
+  hotel.Location = req.body.Location;
+  hotel.Address = req.body.Address;
+  hotel.Image.data = fs.readFileSync(req.file.path);
+  hotel.Image.contentType = req.file.mimetype;
+  hotel.Contact_No = req.body.Contact_No;
+  hotel.Website = req.body.Website;
+  hotel.Facilities = req.body.Facilities;
+  hotel.Availability_status = req.body.Availability_status;
+  hotel.Cost = req.body.Cost;
+  hotel.Ratings = 0;
   await hotel.save();
   return res.send(hotel);
 });
@@ -107,19 +86,17 @@ router.put("/:id", validateHotel, async (req, res) => {
 /* Delete Record */
 router.delete("/:id", async (req, res) => {
   let hotel = await Hotel.findByIdAndDelete(req.params.id);
-  return res.send("Hotel has been Successfully Removed");
+  return res.send(hotel);
 });
 // upload.single("Images"),
 /* Insert Record */
 // validateHotel;
 
-router.post("/", upload.single('file'),  async (req, res) => {
+router.post("/", upload.single('file'), validateHotel, async (req, res) => {
   try {
     const hotel = new Hotel();
-        // console.log(req.file);
     // console.log(req.body);
     hotel.HotelName = req.body.HotelName;
-    hotel.Category = req.body.Category;
     hotel.Location = req.body.Location;
     hotel.Image.data = fs.readFileSync(req.file.path);
     hotel.Image.contentType = req.file.mimetype;

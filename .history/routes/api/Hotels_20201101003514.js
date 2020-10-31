@@ -113,7 +113,7 @@ router.delete("/:id", async (req, res) => {
 /* Insert Record */
 // validateHotel;
 
-router.post("/", upload.single('file'),  async (req, res) => {
+router.post("/", upload.single('file'), validateHotel, async (req, res) => {
   try {
     const hotel = new Hotel();
         // console.log(req.file);

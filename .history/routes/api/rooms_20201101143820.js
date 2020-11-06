@@ -78,7 +78,7 @@ router.get("/:id", async (req, res) => {
   try {
     let room = await Room.findById(req.params.id);
     if (!room)
-      return res.status(400).send("Room with given ID is not present ");
+      return res.status(400).send("Hotel with given ID is not present ");
     return res.send(room);
   } catch (err) {
     return res.status(400).send("Invalid ID");

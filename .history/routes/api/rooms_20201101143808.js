@@ -78,7 +78,7 @@ router.get("/:id", async (req, res) => {
   try {
     let room = await Room.findById(req.params.id);
     if (!room)
-      return res.status(400).send("Room with given ID is not present ");
+      return res.status(400).send("Hotel with given ID is not present ");
     return res.send(room);
   } catch (err) {
     return res.status(400).send("Invalid ID");
@@ -118,7 +118,7 @@ router.put("/:id", validateRoom, async (req, res) => {
       room.Shower = req.body.Shower;
    room.Television=  req.body.Television
   room.TeaMaker = req.body.TeaMaker;
-  
+  room.Booked = 0;
   await hotel.save();
   return res.send(hotel);
 });
@@ -155,7 +155,6 @@ router.post("/", upload.single('file'),  async (req, res) => {
       room.Shower = req.body.Shower;
    room.Television=  req.body.Television
       room.TeaMaker = req.body.TeaMaker;
-      room.Booked = 0;
     // room.Facilities = req.body.Facilities;
     await room.save();
     // return res.send(hotel);

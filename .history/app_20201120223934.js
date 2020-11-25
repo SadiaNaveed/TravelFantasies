@@ -16,7 +16,6 @@ var placesRouter = require("./routes/api/place");
 var hotelCategoryRouter = require("./routes/api/hotelCategory");
 var roomCategoryRouter = require("./routes/api/roomCategory");
 var roomRouter = require("./routes/api/rooms");
-var hotelReviewRouter = require("./routes/api/hotelReview");
 
 // var bodyParser = require("body-parser");
 // var fs = require("fs");
@@ -54,7 +53,6 @@ app.use("/api/places", placesRouter);
 app.use("/api/hotelCategory", hotelCategoryRouter);
 app.use("/api/roomCategory", roomCategoryRouter);
 app.use("/api/rooms", roomRouter);
-app.use("/api/hotelReview", hotelReviewRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -86,13 +84,10 @@ app.use(function (err, req, res, next) {
 //   client.close();
 // });
 mongoose
-  .connect(
-    "mongodb+srv://Sadia:E70141C7@cluster0.2il5f.mongodb.net/TravelFantasies?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect("mongodb://Sadia:E70141C7@cluster.mongodb.net/TravelFantasies", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Connected to Mongo...."))
   .catch((error) => console.log(error.message));
 module.exports = app;

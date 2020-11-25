@@ -61,18 +61,7 @@ router.get("/", async (req, res) => {
   let perPage = Number(req.query.perPage ? req.query.perPage : 10);
   let skipRecords = perPage * (page - 1);
   //.skip(skipRecords).limit(perPage)
-  let hotels = await Hotel.find().skip(0).limit(20);
-  res.contentType("json");
-  console.log(hotels);
-  return res.send(hotels);
-});
-router.get("/firstthree", async (req, res) => {
-  //res.send(["Pen", "Pencil"]);
-  // let page = Number(req.query.page ? req.query.page : 2);
-  // let perPage = Number(req.query.perPage ? req.query.perPage : 10);
-  // let skipRecords = perPage * (page - 1);
-  //.skip(skipRecords).limit(perPage)
-  let hotels = await Hotel.find().limit(3);
+  let hotels = await Hotel.find().skip(0).limit(1);
   res.contentType("json");
   console.log(hotels);
   return res.send(hotels);

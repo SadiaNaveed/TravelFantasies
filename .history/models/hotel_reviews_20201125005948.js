@@ -2,20 +2,24 @@ var mongoose = require("mongoose");
 const Joi = require("@hapi/joi");
 const { ValidationError } = require("@hapi/joi");
 
-var HotelReviewSchema = mongoose.Schema({
-  Ratings: Number,
-  Comment: String,
-  HotelId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hotel",
+var HotelReviewSchema = mongoose.Schema(
+  {
+    Ratings: Number,
+    Comment: String,
+    HotelId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Hotel",
+    },
+    Image: {
+      data: Buffer,
+      contentType: String,
+    },
+    //    UserId:
+    Date: String,
   },
-  Image: {
-    data: Buffer,
-    contentType: String,
-  },
-  //    UserId:
-  Date: String,
-});
+
+  { timestamps: true }
+);
 var HotelReview = mongoose.model(
   "Hotel_Reviews",
   HotelReviewSchema,
@@ -24,9 +28,8 @@ var HotelReview = mongoose.model(
 
 function validateHotelReview(data) {
   const schema = Joi.object({
-    Ratings: Joi.number().required(),
-    Comment: Joi.string().required(),
-    Date: Joi.string().required(),
+    Ratings: Joi.number(),
+    Comment: Joi.string(),
   });
   return schema.validate(data, { abortEarly: false });
 }

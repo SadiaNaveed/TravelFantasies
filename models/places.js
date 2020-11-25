@@ -2,30 +2,22 @@ var mongoose = require("mongoose");
 const Joi = require("@hapi/joi");
 const { ValidationError } = require("@hapi/joi");
 
-var placeSchema = mongoose.Schema({
-  city: String,
-  admin: String,
-  country: String,
-  population_proper: String,
-  iso2: String,
-  capital: String,
-  lat: String,
-  lng: String,
-  population: String,
+var PlaceSchema = mongoose.Schema({
+  place_name: String,
+  City: String,
+  Description: String,
+  Images: {
+    data: Buffer,
+    contentType: String
+  },
 });
-var Place = mongoose.model("places", placeSchema);
+  var Place = mongoose.model("Place_Detail", PlaceSchema,"Place_Detail" );
 
 function validatePlace(data) {
   const schema = Joi.object({
-    city: Joi.string(),
-    admin: Joi.string(),
-    country: Joi.string(),
-    population_proper: Joi.string(),
-    iso2: Joi.string(),
-    capital: Joi.string(),
-    lat: Joi.string(),
-    lng: Joi.string(),
-    population: Joi.string(),
+    place_name: Joi.string(),
+    City: Joi.string().required(),
+    Description: Joi.string().required(),
   });
   return schema.validate(data, { abortEarly: false });
 }

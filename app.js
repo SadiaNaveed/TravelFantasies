@@ -8,15 +8,16 @@ var cors = require("cors");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/api/users");
+var blogsRouter = require("./routes/api/Blogs");
 var ToursRouter = require("./routes/api/Tours");
 var hotelsRouter = require("./routes/api/Hotels");
 var hotelBookingRouter = require("./routes/api/hotelBooking");
 var tourCategoryRouter = require("./routes/api/tourCategory");
-var placesRouter = require("./routes/api/place");
+var placesRouter = require("./routes/api/Place");
 var hotelCategoryRouter = require("./routes/api/hotelCategory");
 var roomCategoryRouter = require("./routes/api/roomCategory");
 var roomRouter = require("./routes/api/rooms");
-var hotelReviewRouter = require("./routes/api/hotelReview");
+var blogCategoryRouter = require("./routes/api/blogCategory");
 
 // var bodyParser = require("body-parser");
 // var fs = require("fs");
@@ -54,7 +55,9 @@ app.use("/api/places", placesRouter);
 app.use("/api/hotelCategory", hotelCategoryRouter);
 app.use("/api/roomCategory", roomCategoryRouter);
 app.use("/api/rooms", roomRouter);
-app.use("/api/hotelReview", hotelReviewRouter);
+app.use("/api/Blog",blogsRouter);
+app.use("/api/BlogCategory",blogCategoryRouter)
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -70,21 +73,13 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-// const MongoClient = require("mongodb").MongoClient;
-// const uri =
-//   //
-//   "mongodb+srv://Sadia:E70141C7@cluster0.2il5f.mongodb.net/TravelFantasies?retryWrites=true&w=majority";
-// const client = new MongoClient(uri, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-// client.connect((err) => {
-//   //const collection = client.db("TravelFantasies").collection("devices");
-//   // perform actions on the collection object
-//   console.log("Connected to Mongo....");
-//   //console.log(err);
-//   client.close();
-// });
+// mongoose
+//   .connect(config.get("db"), {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("Connected to Mongo...."))
+//   .catch((error) => console.log(error.message));
 mongoose
   .connect(
     "mongodb+srv://Sadia:E70141C7@cluster0.2il5f.mongodb.net/TravelFantasies?retryWrites=true&w=majority",

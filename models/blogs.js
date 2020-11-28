@@ -11,7 +11,7 @@ var BlogsSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "BlogCategory",
         }});
-        var Blog = mongoose.model("Blog", BlogSchema);
+        var Blog = mongoose.model("Blog", BlogsSchema);
 
 function validateBlog(data) {
   const schema = Joi.object({

@@ -79,7 +79,7 @@ router.put("/:id", upload.single("file"), async (req, res) => {
 // });
 
 /* Insert Record */
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", async (req, res) => {
   let place = new Place();
   place.place_name = req.body.place_name;
   place.City = req.body.City;

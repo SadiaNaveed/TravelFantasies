@@ -85,15 +85,17 @@ router.delete("/:id", async (req, res) => {
 });
 
 /* Insert Record */
-//;
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", upload.array("file", 10), async (req, res) => {
   let HotelReviews = new HotelReview();
   HotelReviews.Ratings = req.body.Ratings;
   HotelReviews.Comment = req.body.Comment;
   HotelReviews.HotelId = req.body.Hotel_id;
   HotelReviews.Date = req.body.Date;
+
   HotelReviews.Image.data = fs.readFileSync(req.file.path);
   HotelReviews.Image.contentType = req.file.mimetype;
+  //  HotelBooking. UserId= req.body.User_id;
+
   await HotelReviews.save();
   return res.send(HotelReviews);
 });

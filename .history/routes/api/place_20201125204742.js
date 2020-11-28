@@ -61,11 +61,11 @@ router.get("/", async (req, res) => {
 //   }
 // });
 // /* Update Record */
-router.put("/:id", upload.single("file"), async (req, res) => {
+router.put("/:id", async (req, res) => {
   let place = await Place.findById(req.params.id);
-  place.place_name = req.body.place_name;
-  place.City = req.body.City;
-  place.Description = req.body.Description;
+  // place.place_name = req.body.place_name;
+  // place.City = req.body.City;
+  // place.Description = req.body.Description;
   place.Image.data = fs.readFileSync(req.file.path);
   place.Image.contentType = req.file.mimetype;
   await place.save();
@@ -79,13 +79,12 @@ router.put("/:id", upload.single("file"), async (req, res) => {
 // });
 
 /* Insert Record */
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", async (req, res) => {
   let place = new Place();
   place.place_name = req.body.place_name;
   place.City = req.body.City;
   place.Description = req.body.Description;
-  place.Image.data = fs.readFileSync(req.file.path);
-  place.Image.contentType = req.file.mimetype;
+
   await place.save();
   return res.send(place);
 });

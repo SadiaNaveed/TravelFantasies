@@ -85,15 +85,40 @@ router.delete("/:id", async (req, res) => {
 });
 
 /* Insert Record */
-//;
-router.post("/", upload.single("file"), async (req, res) => {
+//upload.array("file", 10);
+router.post("/", async (req, res) => {
   let HotelReviews = new HotelReview();
   HotelReviews.Ratings = req.body.Ratings;
   HotelReviews.Comment = req.body.Comment;
   HotelReviews.HotelId = req.body.Hotel_id;
   HotelReviews.Date = req.body.Date;
-  HotelReviews.Image.data = fs.readFileSync(req.file.path);
-  HotelReviews.Image.contentType = req.file.mimetype;
+  // var img = fs.readFileSync(req.file.path);
+  // var encode_image = img.toString("base64");
+  // Define a JSONobject for the image attributes for saving to database
+  req.body.files.map((file) => {
+    let data = fs.readFileSync(file);
+
+    // Convert to Base64 and print out a bit to show it's a string
+    let base64 = data.toString("base64");
+    console.log(base64.substr(0, 200));
+
+    // Feed out string to a buffer and then put it in the database
+    let burger = new Buffer(base64, "base64");
+    HotelReviews.Image = [{ name: "mm", data: burger }];
+  });
+
+  // HotelReviews.Image.contentType = ;
+  // HotelReviews.Image.data = new Buffer(encode_image, "base64");
+  // const promises = req.files.map((file) => {
+  //   const image = new Image(file.buffer); // create the new Image
+  //   return image.save; // return the promise without calling it yet
+  // });
+
+  // const images = await Promise.all(promises); // calls all the porimises returned in `promises`
+  // HotelReviews.Image.data = fs.readFileSync(req.file.path);
+  // HotelReviews.Image.contentType = req.file.mimetype;
+  //  HotelBooking. UserId= req.body.User_id;
+  // (HotelReviews.Image = images);
   await HotelReviews.save();
   return res.send(HotelReviews);
 });

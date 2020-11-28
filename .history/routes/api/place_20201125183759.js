@@ -3,40 +3,6 @@ let router = express.Router();
 const validatePlace = require("../../middlewares/validatePlace");
 var { Place } = require("../../models/places");
 
-const fs = require("fs");
-const multer = require("multer");
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images/hotels");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  },
-});
-
-const filefilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/png"
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-//const upload = multer({ dest: "uploads/" });
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
-  },
-  fileFilter: filefilter,
-});
-//.any('file')
-
 /* GET users listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -61,16 +27,18 @@ router.get("/", async (req, res) => {
 //   }
 // });
 // /* Update Record */
-router.put("/:id", upload.single("file"), async (req, res) => {
-  let place = await Place.findById(req.params.id);
-  place.place_name = req.body.place_name;
-  place.City = req.body.City;
-  place.Description = req.body.Description;
-  place.Image.data = fs.readFileSync(req.file.path);
-  place.Image.contentType = req.file.mimetype;
-  await place.save();
-  return res.send(place);
-});
+// router.put("/:id", validateUser, async (req, res) => {
+//   let user = await User.findById(req.params.id);
+//   user.Name = req.body.Name;
+//   user.Age = req.body.Age;
+//   user.CNIC = req.body.CNIC;
+//   user.Contact_no = req.body.Contact_no;
+//   user.Email = req.body.Email;
+//   user.Gender = req.body.Gender;
+//   user.Password = req.body.Password;
+//   await user.save();
+//   return res.send(user);
+// });
 
 // /* Delete Record */
 // router.delete("/:id", async (req, res) => {
@@ -79,13 +47,15 @@ router.put("/:id", upload.single("file"), async (req, res) => {
 // });
 
 /* Insert Record */
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", async (req, res) => {
   let place = new Place();
   place.place_name = req.body.place_name;
   place.City = req.body.City;
   place.Description = req.body.Description;
-  place.Image.data = fs.readFileSync(req.file.path);
-  place.Image.contentType = req.file.mimetype;
+  place.Contact_no = req.body.Contact_no;
+  place.Email = req.body.Email;
+  place.Gender = req.body.Gender;
+  place.Password = req.body.Password;
   await place.save();
   return res.send(place);
 });

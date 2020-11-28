@@ -3,40 +3,6 @@ let router = express.Router();
 const validatePlace = require("../../middlewares/validatePlace");
 var { Place } = require("../../models/places");
 
-const fs = require("fs");
-const multer = require("multer");
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images/hotels");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  },
-});
-
-const filefilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/png"
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-//const upload = multer({ dest: "uploads/" });
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
-  },
-  fileFilter: filefilter,
-});
-//.any('file')
-
 /* GET users listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -61,13 +27,11 @@ router.get("/", async (req, res) => {
 //   }
 // });
 // /* Update Record */
-router.put("/:id", upload.single("file"), async (req, res) => {
+router.put("/:id", validateUser, async (req, res) => {
   let place = await Place.findById(req.params.id);
   place.place_name = req.body.place_name;
   place.City = req.body.City;
   place.Description = req.body.Description;
-  place.Image.data = fs.readFileSync(req.file.path);
-  place.Image.contentType = req.file.mimetype;
   await place.save();
   return res.send(place);
 });
@@ -79,13 +43,12 @@ router.put("/:id", upload.single("file"), async (req, res) => {
 // });
 
 /* Insert Record */
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", async (req, res) => {
   let place = new Place();
   place.place_name = req.body.place_name;
   place.City = req.body.City;
   place.Description = req.body.Description;
-  place.Image.data = fs.readFileSync(req.file.path);
-  place.Image.contentType = req.file.mimetype;
+
   await place.save();
   return res.send(place);
 });

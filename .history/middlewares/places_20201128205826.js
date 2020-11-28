@@ -8,10 +8,10 @@ var PlaceSchema = mongoose.Schema({
   Description: String,
   Images: {
     data: Buffer,
-    contentType: String,
+    contentType: String
   },
 });
-var Place = mongoose.model("Place_Detail", PlaceSchema, "Place_Detail");
+  var Place = mongoose.model("Place_Detail", PlaceSchema,"Place_Detail" );
 
 function validatePlace(data) {
   const schema = Joi.object({

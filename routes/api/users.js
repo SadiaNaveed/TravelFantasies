@@ -3,13 +3,55 @@ let router = express.Router();
 const validateUser = require("../../middlewares/validateUser");
 var { User } = require("../../models/users");
 
+
+router.post("/signup-user", async (req, res) => {
+
+  let user = new User();
+  
+  user.Email = req.body.email;
+  user.Name = req.body.name;
+  user.Password = req.body.password;
+  user.Role = "user"
+
+  await user.save();
+
+  return res.send(user);
+
+});
+
+router.post("/signup-admin", async (req, res) => {
+
+  let user = new User();
+  
+  user.Email = req.body.email;
+  user.Name = req.body.name;
+  user.Password = req.body.password;
+  user.Role = req.body.role;
+
+  await user.save();
+
+  return res.send(user);
+
+});
+
+router.post("/login", async (req, res) => {
+
+    var user = await User.find({Email: req.body.email, Password:req.body.password, Role:req.body.role})
+    if(user.length < 1) return res.send("Invalid email and password").status(401)
+
+    return res.send(user).status(200)
+ 
+});
+
 /* GET users listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 10);
   let skipRecords = perPage * (page - 1);
+  
   let users = await User.find().skip(skipRecords).limit(perPage);
+
   return res.send(users);
 });
 
@@ -58,4 +100,7 @@ router.post("/", validateUser, async (req, res) => {
   await user.save();
   return res.send(user);
 });
+
+
+
 module.exports = router;

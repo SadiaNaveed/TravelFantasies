@@ -3,7 +3,7 @@ let router = express.Router();
 var { BlogCategory } = require("../../models/blogCategory");
 //const multer = require("multer");
 const { request, response } = require("../../app");
-const validateBlogCategory = require("../../middlewares/validateBloglCategory");
+const validateBlogCategory = require("../../middlewares/validateBlogCategory");
 
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -12,13 +12,12 @@ router.get("/", async (req, res) => {
   let skipRecords = perPage * (page - 1);
   //.skip(skipRecords).limit(perPage)
   let category = await BlogCategory.find().skip(0).limit(perPage);
-  res.contentType('json');
+  res.contentType("json");
   console.log(category);
   return res.send(category);
 });
 
 /* GET single blog . */
-
 
 router.get("/:id", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -46,20 +45,19 @@ router.delete("/:id", async (req, res) => {
   return res.send(hotel);
 });
 
-router.post("/", validateHotelCategory, async (req, res) => {
+router.post("/", validateBlogCategory, async (req, res) => {
   try {
-
     console.log(req.body);
-      const hotel = new HotelCategory();
+    const hotel = new HotelCategory();
     hotel.CategoryName = req.body.CategoryName;
     hotel.Description = req.body.Description;
-  await hotel.save();
+    await hotel.save();
     // return res.send(hotel);
     return res.send("data");
   } catch (error) {
     console.log(error);
     res.send(error.message);
   }
-  });
+});
 
-  module.exports = router;
+module.exports = router;

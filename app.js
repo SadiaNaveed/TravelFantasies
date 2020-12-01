@@ -55,8 +55,8 @@ app.use("/api/places", placesRouter);
 app.use("/api/hotelCategory", hotelCategoryRouter);
 app.use("/api/roomCategory", roomCategoryRouter);
 app.use("/api/rooms", roomRouter);
-app.use("/api/Blog",blogsRouter);
-app.use("/api/BlogCategory",blogCategoryRouter)
+app.use("/api/Blog", blogsRouter);
+app.use("/api/BlogCategory", blogCategoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

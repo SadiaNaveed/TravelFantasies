@@ -19,13 +19,7 @@ router.post("/register", async (req, res) => {
     { _id: user._id, name: user.name, role: user.role },
     config.get("jwtPrivateKey")
   );
-  let dataToReturn = {
-    name: user.name,
-    email: user.email,
-    token: user.token,
-  };
-  // return res.send(_.pick(user, ["name", "email"]));
-  return res.send(dataToReturn);
+  return res.send(_.pick(user, ["name", "email"]));
 });
 router.post("/login", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });

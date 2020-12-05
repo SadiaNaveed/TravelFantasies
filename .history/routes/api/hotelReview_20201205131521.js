@@ -54,19 +54,10 @@ router.get("/:id", async (req, res) => {
   try {
     let hotelBooking = await HotelReview.findById(req.params.id);
     if (!hotelBooking)
-      return res.status(400).send("Hotel with given ID is not present ");
+      return res
+        .status(400)
+        .send("Hotel Booking with given ID is not present ");
     return res.send(hotelBooking);
-  } catch (err) {
-    return res.status(400).send("Invalid ID");
-  }
-});
-router.get("/Review/:id", async (req, res) => {
-  //res.send(["Pen", "Pencil"]);
-  try {
-    let hotelReview = await HotelReview.find({ HotelId: req.params.id });
-    if (!hotelReview)
-      return res.status(400).send("Hotel with given ID is not present ");
-    return res.send(hotelReview);
   } catch (err) {
     return res.status(400).send("Invalid ID");
   }

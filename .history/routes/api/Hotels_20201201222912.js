@@ -57,7 +57,7 @@ const upload = multer({
 //   next();
 // }
 /* GET hotels listing. */
-router.get("/", async (req, res) => {
+router.get("/", auth,admin async (req, res) => {
   //res.send(["Pen", "Pencil"]);
   let page = Number(req.query.page ? req.query.page : 2);
   let perPage = Number(req.query.perPage ? req.query.perPage : 10);

@@ -24,8 +24,7 @@ router.post("/register", async (req, res) => {
     email: user.email,
     token: user.token,
   };
-  // return res.send(_.pick(user, ["name", "email"]));
-  return res.send(dataToReturn);
+  return res.send(_.pick(user, ["name", "email"]));
 });
 router.post("/login", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });

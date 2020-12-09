@@ -8,7 +8,6 @@ const { request, response } = require("../../app");
 const validateHotelCategory = require("../../middlewares/validateHotelCategory");
 const auth = require("../../middlewares/auth");
 const admin = require("../../middlewares/admin");
-const { runInNewContext } = require("vm");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -126,21 +125,19 @@ router.post("/", upload.single("file"), async (req, res) => {
     const hotel = new Hotel();
     // console.log(req.file);
     console.log(req.body);
-    hotel.HotelName = req.body.HotelName;
-    hotel.Category = req.body.Category;
-    hotel.Location = req.body.Location;
-    hotel.Image.data = fs.readFileSync(req.file.path);
-    hotel.Image.contentType = req.file.mimetype;
-    hotel.Address = req.body.Address;
-    hotel.Contactno = req.body.Contactno;
-    hotel.Website = req.body.Website;
-    hotel.Facilities = req.body.Facilities;
-    hotel.Status = req.body.Status;
-    hotel.Cost = req.body.Cost;
-    hotel.Ratings = 0;
-    hotel.Latitude = req.body.Latitude;
-    hotel.Longitude = req.body.Longitude;
-    await hotel.save();
+    // hotel.HotelName = req.body.HotelName;
+    // hotel.Category = req.body.Category;
+    // hotel.Location = req.body.Location;
+    // hotel.Image.data = fs.readFileSync(req.file.path);
+    // hotel.Image.contentType = req.file.mimetype;
+    // hotel.Address = req.body.Address;
+    // hotel.Contactno = req.body.Contactno;
+    // hotel.Website = req.body.Website;
+    // hotel.Facilities = req.body.Facilities;
+    // hotel.Status = req.body.Status;
+    // hotel.Cost = req.body.Cost;
+    // hotel.Ratings = 0;
+    // await hotel.save();
     // return res.send(hotel);
     return res.send("data");
   } catch (error) {

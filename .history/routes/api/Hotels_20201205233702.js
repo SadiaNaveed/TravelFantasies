@@ -8,7 +8,6 @@ const { request, response } = require("../../app");
 const validateHotelCategory = require("../../middlewares/validateHotelCategory");
 const auth = require("../../middlewares/auth");
 const admin = require("../../middlewares/admin");
-const { runInNewContext } = require("vm");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -138,8 +137,6 @@ router.post("/", upload.single("file"), async (req, res) => {
     hotel.Status = req.body.Status;
     hotel.Cost = req.body.Cost;
     hotel.Ratings = 0;
-    hotel.Latitude = req.body.Latitude;
-    hotel.Longitude = req.body.Longitude;
     await hotel.save();
     // return res.send(hotel);
     return res.send("data");

@@ -140,7 +140,7 @@ router.post("/", upload.single("file"), async (req, res) => {
     hotel.Ratings = 0;
     hotel.Latitude = req.body.Latitude;
     hotel.Longitude = req.body.Longitude;
-    await hotel.save();
+    // await hotel.save();
     // return res.send(hotel);
     return res.send("data");
   } catch (error) {

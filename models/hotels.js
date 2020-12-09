@@ -7,12 +7,12 @@ var HotelSchema = mongoose.Schema({
   Location: String,
   Image: {
     data: Buffer,
-    contentType: String
+    contentType: String,
   },
   Category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "HotelCategory",
-    },
+  },
   Address: String,
   Contactno: String,
   Website: String,
@@ -20,7 +20,8 @@ var HotelSchema = mongoose.Schema({
   Status: String,
   Cost: Number,
   Ratings: Number,
-
+  Latitude: Number,
+  Longitude: Number,
 });
 var Hotel = mongoose.model("Hotel", HotelSchema);
 

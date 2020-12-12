@@ -20,6 +20,7 @@ var TourSchema = mongoose.Schema({
     type: Boolean,
     enum: ["true", "false"],
   },
+
   Total_Seats: Number,
   Available_Seats: Number,
   Tour_Type: {

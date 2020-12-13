@@ -1,5 +1,5 @@
 var express = require("express");
-const fs = require("fs");
+const fs = require('fs');
 let router = express.Router();
 var { TourCategory } = require("../../models/tourCategory");
 const multer = require("multer");
@@ -13,12 +13,13 @@ router.get("/", async (req, res) => {
   let skipRecords = perPage * (page - 1);
   //.skip(skipRecords).limit(perPage)
   let category = await TourCategory.find().skip(0).limit(perPage);
-  res.contentType("json");
+  res.contentType('json');
   console.log(category);
   return res.send(category);
 });
 
-/* GET single Tour . */
+/* GET single hotel . */
+
 
 router.get("/:id", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -34,7 +35,7 @@ router.get("/:id", async (req, res) => {
 /* Update Record */
 router.put("/:id", validateTourCategory, async (req, res) => {
   let hotel = await TourCategory.findById(req.params.id);
-  hotel.Name = req.body.CategoryName;
+  hotel.CategoryName = req.body.CategoryName;
   hotel.Description = req.body.Description;
   await hotel.save();
   return res.send(hotel);
@@ -48,17 +49,18 @@ router.delete("/:id", async (req, res) => {
 //validateTourCategory
 router.post("/", async (req, res) => {
   try {
+
     console.log(req.body);
-    const hotel = new TourCategory();
+      const hotel = new TourCategory();
     hotel.Name = req.body.CategoryName;
     hotel.Description = req.body.Description;
-    await hotel.save();
+  await hotel.save();
     // return res.send(hotel);
     return res.send("data");
   } catch (error) {
     console.log(error);
     res.send(error.message);
   }
-});
+  });
 
-module.exports = router;
+  module.exports = router;

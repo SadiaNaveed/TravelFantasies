@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
   return res.send(category);
 });
 
-/* GET single Tour . */
+/* GET single hotel . */
 
 router.get("/:id", async (req, res) => {
   //res.send(["Pen", "Pencil"]);

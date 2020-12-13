@@ -101,7 +101,6 @@ router.post("/", upload.single("file"), async (req, res) => {
   HotelReviews.Comment = req.body.Comment;
   HotelReviews.HotelId = req.body.Hotel_id;
   HotelReviews.UserId = req.body.User_Id;
-  HotelReviews.Name = req.body.Name;
   HotelReviews.Date = req.body.Date;
   // HotelReviews.Image.data = fs.readFileSync(req.file.path);
   // HotelReviews.Image.contentType = req.file.mimetype;

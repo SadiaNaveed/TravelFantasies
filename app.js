@@ -21,7 +21,6 @@ var roomRouter = require("./routes/api/rooms");
 var blogCategoryRouter = require("./routes/api/blogCategory");
 var hotelReviewRouter = require("./routes/api/hotelReview");
 var paymentRouter = require("./routes/api/Payment");
-
 // var bodyParser = require("body-parser");
 // var fs = require("fs");
 // var path = require("path");

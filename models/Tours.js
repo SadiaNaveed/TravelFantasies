@@ -5,29 +5,33 @@ const User = require("./users");
 
 var TourSchema = mongoose.Schema({
   Title: String,
+  Location: String,
   Description: String,
-  // Images: {
-  //   data: Buffer,
-  //   contentType: String,
-  // },
-  Images: {
-    type: String,
-    required: true,
+   Images: {
+     data: Buffer,
+    contentType: String,
+   },
+   Tour_Type: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tour_Category",
   },
+  //Images: {
+   // type: String,
+  //  required: true,
+ // },
   Start_Date: String,
   End_Date: String,
   Status: {
     type: Boolean,
     enum: ["true", "false"],
   },
+
   Total_Seats: Number,
   Available_Seats: Number,
-  Tour_Type: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Tour_Category",
-  },
   Details: String,
+  Facilities: String,
   Cost: Number,
+  Ratings: Number,
   no_of_days: Number,
   Host_Id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -40,6 +44,7 @@ var Tour = mongoose.model("Tour", TourSchema);
 function validateTour(data) {
   const schema = Joi.object({
     Title: Joi.string(),
+    Location: Joi.string().required(),
     Description: Joi.string(),
     Images: Joi.string(),
     Host_Id: Joi.string(),
@@ -50,6 +55,8 @@ function validateTour(data) {
     Available_Seats: Joi.required(),
     Tour_Type: Joi.string(),
     Details: Joi.string(),
+    Facilities: Joi.string().required(),
+    Ratings: Joi.number(),
     Cost: Joi.required(),
     no_of_days: Joi.required(),
   });

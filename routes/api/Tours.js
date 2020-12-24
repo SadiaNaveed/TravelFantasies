@@ -7,7 +7,7 @@ const { request } = require("../../app");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/images");
+    cb(null, "E:/semester 8/Software Testing/TravelFantasies-master/public/images/tours");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
@@ -47,6 +47,18 @@ router.get("/", async (req, res) => {
   return res.send(tours);
 });
 
+router.get("/unapproved", async (req, res) => {
+  console.log("adssd")
+  //res.send(["Pen", "Pencil"]);
+  // let page = Number(req.query.page ? req.quer y.page : 1);
+  // let perPage = Number(req.query.perPage ? req.query.perPage : 10);
+  // let skipRecords = perPage * (page - 1);
+  //let tours = await Tour.find().skip(skipRecords).limit(perPage);
+  let tours = await Tour.find({Status:false})
+    
+  return res.send(tours);
+});
+
 /* GET single tour . */
 router.get("/:id", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
@@ -64,8 +76,11 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", validateTour, async (req, res) => {
   let tour = await Tour.findById(req.params.id);
   tour.Title = req.body.Title;
+  tour.Location = req.body.Location;
   tour.Description = req.body.Description;
-  tour.Images = req.file.path;
+  tour.Image.data = fs.readFileSync(req.file.path);
+  tour.Image.contentType = req.file.mimetype;
+  //tour.Images = req.file.path;
   tour.Host_Id = req.body.Host_Id;
   tour.Start_Date = req.body.Start_Date;
   tour.End_Date = req.body.End_Date;
@@ -75,6 +90,8 @@ router.put("/:id", validateTour, async (req, res) => {
   tour.Tour_Type = req.body.Tour_Type;
   tour.Details = req.body.Details;
   tour.Cost = req.body.Cost;
+  tour.Facilities = req.body.Facilities;
+  tour.Ratings = req.body.Ratings;
   tour.no_of_days = req.body.no_of_days;
   await tour.save();
   return res.send(tour);
@@ -85,14 +102,20 @@ router.delete("/:id", async (req, res) => {
   let tour = await Tour.findByIdAndDelete(req.params.id);
   return res.send(tour);
 });
-// validateTour;
-/* Insert Record */
-router.post("/", upload.single("Images"), validateTour, async (req, res) => {
-  console.log(req.file);
+
+
+
+router.post("/",upload.single("file"), async (req, res) => {
+  //console.log(req.file);
+  console.log(req.body);
+
   let tour = new Tour();
   tour.Title = req.body.Title;
+  tour.Location = req.body.Location;
   tour.Description = req.body.Description;
-  tour.Images = req.file.path;
+  tour.Image.data = fs.readFileSync(req.file.path);
+  tour.Image.contentType = req.file.mimetype;
+  //tour.Images = req.body.Images;
   tour.Host_Id = req.body.Host_Id;
   tour.Start_Date = req.body.Start_Date;
   tour.End_Date = req.body.End_Date;
@@ -102,8 +125,13 @@ router.post("/", upload.single("Images"), validateTour, async (req, res) => {
   tour.Tour_Type = req.body.Tour_Type;
   tour.Details = req.body.Details;
   tour.Cost = req.body.Cost;
+  tour.Facilities = req.body.Facilities;
+  tour.Ratings = req.body.Ratings;
   tour.no_of_days = req.body.no_of_days;
   await tour.save();
   return res.send(tour);
 });
+
+
+
 module.exports = router;

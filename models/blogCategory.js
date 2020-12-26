@@ -7,7 +7,7 @@ var BlogCategorySchema = mongoose.Schema({
   Description: String,
 
 });
-var BlogCategory = mongoose.model("BlogCategory", BlogCategorySchema);
+var BlogCategory = mongoose.model("BlogCategory", BlogCategorySchema, "BlogCategory");
 
 function validateBlogCategory(data) {
   const schema = Joi.object({

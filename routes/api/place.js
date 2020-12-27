@@ -37,7 +37,7 @@ const upload = multer({
 });
 //.any('file')
 
-/* GET users listing. */
+/* GET places listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
   let page = Number(req.query.page ? req.query.page : 2);

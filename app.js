@@ -20,6 +20,8 @@ var roomCategoryRouter = require("./routes/api/roomCategory");
 var roomRouter = require("./routes/api/rooms");
 var blogCategoryRouter = require("./routes/api/blogCategory");
 var hotelReviewRouter = require("./routes/api/hotelReview");
+var PackagesRouter = require("./routes/api/Packages");
+var TourBookingsRouter = require("./routes/api/TourBookings");
 var paymentRouter = require("./routes/api/Payment");
 // var bodyParser = require("body-parser");
 // var fs = require("fs");
@@ -61,6 +63,8 @@ app.use("/api/rooms", roomRouter);
 app.use("/api/Blog", blogsRouter);
 app.use("/api/BlogCategory", blogCategoryRouter);
 app.use("/api/hotelReview", hotelReviewRouter);
+app.use("/api/Packages", PackagesRouter);
+app.use("/api/TourBookings", TourBookingsRouter);
 app.use("/api/payment", paymentRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

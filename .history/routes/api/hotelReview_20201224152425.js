@@ -7,7 +7,6 @@ const multer = require("multer");
 const _ = require("underscore-node");
 const { sum } = require("lodash");
 const { contains } = require("underscore-node");
-const { Hotel } = require("../../models/hotels");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -126,18 +125,13 @@ router.delete("/:id", async (req, res) => {
 /* Insert Record */
 //;
 // upload.single("file"),
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", async (req, res) => {
   let HotelReviews = new HotelReview();
-  let hotel = await Hotel.findById(req.body.HotelId);
-  let newRatings = 0;
-  let countUser = 0;
-  let newNoReviews = 0;
-  let newAvg = 0;
   try {
-    countUser = await HotelReview.find({
-      HotelId: req.body.HotelId,
+    let countUser = await HotelReview.find({
+      HotelId: req.params.id,
     }).countDocuments();
-    console.log("count is " + countUser);
+    //console.log("count is " + countUser);
     await HotelReview.find(
       { HotelId: req.body.HotelId },
       async function (err, results) {
@@ -147,56 +141,42 @@ router.post("/", upload.single("file"), async (req, res) => {
 
         let sum = _.reduce(
           results,
-          function (memo, reading) {
+          await function (memo, reading) {
             return memo + reading.Ratings;
           },
           0
         );
         // avg = sum;
-        console.log(sum);
-        //        avg = sum / countUser;
-
-        newRatings = sum + req.body.Ratings;
-        console.log(req.body.Ratings);
+        avg = sum / countUser;
         // console.log(sum);
         // console.log(avg);
-        //      console.log(avg);
-        //if (!countUser) return res.status(400).send("No Reviews");
-        // return res.status(200).json({ Average: avg, noOfReviews: countUser });
-
-        console.log(newRatings);
-        newNoReviews = countUser + 1;
-        console.log(newNoReviews);
-        newAvg = newRatings / newNoReviews;
-        newAvg = newAvg.toFixed(1);
-        console.log(newAvg);
-        console.log(req.body);
       }
     );
     // avg = summ / countUser;
+    console.log(avg);
+    //if (!countUser) return res.status(400).send("No Reviews");
+    // return res.status(200).json({ Average: avg, noOfReviews: countUser });
+    let newRatings = avg + req.body.Ratings;
+    console.log(newRatings);
+    let newNoReviews = countUser + 1;
+    console.log(newNoReviews);
+    let newAvg = newRatings / newNoReviews;
+    console.log(newAvg);
+    console.log(req.body);
   } catch (err) {
     return res.status(400).send(err);
   }
-  if (newAvg == 0) {
-    hotel.AvgRatings = req.body.ratings;
-    hotel.CountRatings = 1;
-  } else {
-    hotel.AvgRatings = newAvg;
-    hotel.CountRatings = newNoReviews;
-  }
 
-  HotelReviews.Ratings = req.body.Ratings;
-  HotelReviews.Comment = req.body.Comment;
-  HotelReviews.HotelId = req.body.HotelId;
-  HotelReviews.UserId = req.body.UserId;
-  HotelReviews.Username = req.body.Username;
-  // HotelReviews.Name = req.body.Name;
-  HotelReviews.Date = req.body.Date;
-  HotelReviews.Image.data = fs.readFileSync(req.file.path);
-  HotelReviews.Image.contentType = req.file.mimetype;
-  await HotelReviews.save();
-  await hotel.save();
-  //return res.send(hotel);
-  return res.send("Refresh the Page To View Your Review");
+  // HotelReviews.Ratings = req.body.Ratings;
+  // HotelReviews.Comment = req.body.Comment;
+  // HotelReviews.HotelId = req.body.HotelId;
+  // HotelReviews.UserId = req.body.UserId;
+  // HotelReviews.Username = req.body.Username;
+  // // HotelReviews.Name = req.body.Name;
+  // HotelReviews.Date = req.body.Date;
+  // HotelReviews.Image.data = fs.readFileSync(req.file.path);
+  // HotelReviews.Image.contentType = req.file.mimetype;
+  // await HotelReviews.save();
+  // return res.send("Refresh the Page To View Your Review");
 });
 module.exports = router;

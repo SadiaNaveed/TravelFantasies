@@ -76,7 +76,7 @@ router.get("/:id", async (req, res) => {
 });
 
 /* Update Record */
-router.put("/:id", validateTour, async (req, res) => {
+router.put("/:id", upload.single("file"), validateTour, async (req, res) => {
   let tour = await Tour.findById(req.params.id);
   tour.Title = req.body.Title;
   tour.Location = req.body.Location;

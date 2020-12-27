@@ -126,7 +126,7 @@ router.delete("/:id", async (req, res) => {
 /* Insert Record */
 //;
 // upload.single("file"),
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", async (req, res) => {
   let HotelReviews = new HotelReview();
   let hotel = await Hotel.findById(req.body.HotelId);
   let newRatings = 0;
@@ -154,13 +154,12 @@ router.post("/", upload.single("file"), async (req, res) => {
         );
         // avg = sum;
         console.log(sum);
-        //        avg = sum / countUser;
+        avg = sum / countUser;
 
-        newRatings = sum + req.body.Ratings;
-        console.log(req.body.Ratings);
+        newRatings = sum + req.body.ratings;
         // console.log(sum);
         // console.log(avg);
-        //      console.log(avg);
+        console.log(avg);
         //if (!countUser) return res.status(400).send("No Reviews");
         // return res.status(200).json({ Average: avg, noOfReviews: countUser });
 
@@ -177,14 +176,8 @@ router.post("/", upload.single("file"), async (req, res) => {
   } catch (err) {
     return res.status(400).send(err);
   }
-  if (newAvg == 0) {
-    hotel.AvgRatings = req.body.ratings;
-    hotel.CountRatings = 1;
-  } else {
-    hotel.AvgRatings = newAvg;
-    hotel.CountRatings = newNoReviews;
-  }
-
+  hotel.AvgRatings = newAvg;
+  hotel.CountRatings = newNoReviews;
   HotelReviews.Ratings = req.body.Ratings;
   HotelReviews.Comment = req.body.Comment;
   HotelReviews.HotelId = req.body.HotelId;

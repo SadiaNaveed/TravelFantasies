@@ -126,7 +126,7 @@ router.delete("/:id", async (req, res) => {
 /* Insert Record */
 //;
 // upload.single("file"),
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", async (req, res) => {
   let HotelReviews = new HotelReview();
   let hotel = await Hotel.findById(req.body.HotelId);
   let newRatings = 0;
@@ -157,7 +157,6 @@ router.post("/", upload.single("file"), async (req, res) => {
         //        avg = sum / countUser;
 
         newRatings = sum + req.body.Ratings;
-        console.log(req.body.Ratings);
         // console.log(sum);
         // console.log(avg);
         //      console.log(avg);

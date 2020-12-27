@@ -31,6 +31,7 @@ const filefilter = (req, file, cb) => {
   }
 };
 
+//const upload = multer({ dest: "uploads/" });
 const upload = multer({
   storage: storage,
   limits: {
@@ -38,23 +39,53 @@ const upload = multer({
   },
   fileFilter: filefilter,
 });
+//.any('file')
 
+// const params = {
+//   '/single': 'file',
+//   '/multiple': 'files'
+// };
+
+// function validate(req, res, next) {
+//   let param = params[req.url];
+//   if (!req[param]) {
+//     return res.send({
+//       errors: {
+//         message: `${param} cant be empty`
+//       }
+//     });
+//   }
+//   next();
+// }
+/* GET hotels listing. */
 router.get("/", async (req, res) => {
+  //res.send(["Pen", "Pencil"]);
   let page = Number(req.query.page ? req.query.page : 2);
   let perPage = Number(req.query.perPage ? req.query.perPage : 10);
   let skipRecords = perPage * (page - 1);
+  //.skip(skipRecords).limit(perPage)
   let hotels = await Hotel.find().skip(0).limit(20);
   res.contentType("json");
   console.log(hotels);
   return res.send(hotels);
 });
 router.get("/firstthree", async (req, res) => {
+  //res.send(["Pen", "Pencil"]);
+  // let page = Number(req.query.page ? req.query.page : 2);
+  // let perPage = Number(req.query.perPage ? req.query.perPage : 10);
+  // let skipRecords = perPage * (page - 1);
+  //.skip(skipRecords).limit(perPage)
   let hotels = await Hotel.find().limit(3);
   res.contentType("json");
   console.log(hotels);
   return res.send(hotels);
 });
 router.get("/find", async (req, res) => {
+  //res.send(["Pen", "Pencil"]);
+  // let page = Number(req.query.page ? req.query.page : 2);
+  // let perPage = Number(req.query.perPage ? req.query.perPage : 10);
+  // let skipRecords = perPage * (page - 1);
+  //.skip(skipRecords).limit(perPage)
   console.log(req.query.hotelname);
   let hotels = await Hotel.find({ HotelName: req.query.hotelname });
   res.contentType("json");
@@ -63,7 +94,9 @@ router.get("/find", async (req, res) => {
 });
 
 /* GET single hotel . */
+
 router.get("/:id", async (req, res) => {
+  //res.send(["Pen", "Pencil"]);
   try {
     let hotel = await Hotel.findById(req.params.id);
     if (!hotel)
@@ -88,8 +121,6 @@ router.put("/:id", validateHotel, async (req, res) => {
   hotel.Facilities = req.body.Facilities;
   hotel.Status = req.body.Status;
   hotel.Cost = req.body.Cost;
-  hotel.Latitude = req.body.Latitude;
-  hotel.Longitude = req.body.Longitude;
   await hotel.save();
   return res.send(hotel);
 });
@@ -99,31 +130,40 @@ router.delete("/:id", async (req, res) => {
   let hotel = await Hotel.findByIdAndDelete(req.params.id);
   return res.send("Hotel has been Successfully Removed");
 });
+// upload.single("Images"),
+/* Insert Record */
+// validateHotel;
 
-router.post("/", validateHotel, upload.single("file"), async (req, res) => {
-  try {
-    const hotel = new Hotel();
-    console.log(req.body);
-    hotel.HotelName = req.body.HotelName;
-    hotel.Category = req.body.Category;
-    hotel.Location = req.body.Location;
-    hotel.Image.data = fs.readFileSync(req.file.path);
-    hotel.Image.contentType = req.file.mimetype;
-    hotel.Address = req.body.Address;
-    hotel.Contactno = req.body.Contactno;
-    hotel.Website = req.body.Website;
-    hotel.Facilities = req.body.Facilities;
-    hotel.Status = req.body.Status;
-    hotel.Cost = req.body.Cost;
-    hotel.Latitude = req.body.Latitude;
-    hotel.Longitude = req.body.Longitude;
-    hotel.AvgRatings = 0.0;
-    hotel.CountRatings = 0;
-    await hotel.save();
-    return res.send("data");
-  } catch (error) {
-    console.log(error);
-    res.send(error.message);
+router.post(
+  "/", validateHotel,
+  upload.single("file"),
+  async (req, res) => {
+    try {
+      const hotel = new Hotel();
+      console.log(req.body);
+      hotel.HotelName = req.body.HotelName;
+      hotel.Category = req.body.Category;
+      hotel.Location = req.body.Location;
+      hotel.Image.data = fs.readFileSync(req.file.path);
+      hotel.Image.contentType = req.file.mimetype;
+      hotel.Address = req.body.Address;
+      hotel.Contactno = req.body.Contactno;
+      hotel.Website = req.body.Website;
+      hotel.Facilities = req.body.Facilities;
+      hotel.Status = req.body.Status;
+      hotel.Cost = req.body.Cost;
+      hotel.Latitude = req.body.Latitude;
+      hotel.Longitude = req.body.Longitude;
+      hotel.AvgRatings = 0.0;
+      hotel.CountRatings = 0;
+      await hotel.save();
+      // return res.send(hotel);
+      return res.send("data");
+    } catch (error) {
+      console.log(error);
+      res.send(error.message);
+    }
+    //res.json({ filename: file.name, filePath: `/uploads/${file.name}` });
   }
-});
+);
 module.exports = router;

@@ -50,7 +50,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/tours", ToursRouter);
-// app.use("/api/guide", GuideRouter);
+app.use("/api/guide", GuideRouter);
 app.use("/api/hotels", hotelsRouter);
 app.use("/api/hotelBookings", hotelBookingRouter);
 app.use("/api/tourCategory", tourCategoryRouter);

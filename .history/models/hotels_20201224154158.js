@@ -19,6 +19,7 @@ var HotelSchema = mongoose.Schema({
   Facilities: String,
   Status: String,
   Cost: Number,
+  Ratings: Number,
   Latitude: Number,
   Longitude: Number,
   AvgRatings: Number,

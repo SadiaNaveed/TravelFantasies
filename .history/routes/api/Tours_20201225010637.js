@@ -7,10 +7,7 @@ const { request } = require("../../app");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(
-      null,
-      "E:/semester 8/Software Testing/TravelFantasies-master/public/images/tours"
-    );
+    cb(null, "E:/semester 8/Software Testing/TravelFantasies-master/public/images/tours");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
@@ -51,14 +48,14 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/unapproved", async (req, res) => {
-  console.log("adssd");
+  console.log("adssd")
   //res.send(["Pen", "Pencil"]);
   // let page = Number(req.query.page ? req.quer y.page : 1);
   // let perPage = Number(req.query.perPage ? req.query.perPage : 10);
   // let skipRecords = perPage * (page - 1);
   //let tours = await Tour.find().skip(skipRecords).limit(perPage);
-  let tours = await Tour.find({ Status: false });
-
+  let tours = await Tour.find({Status:false})
+    
   return res.send(tours);
 });
 
@@ -106,7 +103,9 @@ router.delete("/:id", async (req, res) => {
   return res.send(tour);
 });
 
-router.post("/", upload.single("file"), async (req, res) => {
+
+
+router.post("/",upload.single("file"), async (req, res) => {
   //console.log(req.file);
   console.log(req.body);
 
@@ -132,5 +131,7 @@ router.post("/", upload.single("file"), async (req, res) => {
   await tour.save();
   return res.send(tour);
 });
+
+
 
 module.exports = router;

@@ -63,6 +63,7 @@ router.get("/find", async (req, res) => {
 });
 
 /* GET single hotel . */
+
 router.get("/:id", async (req, res) => {
   try {
     let hotel = await Hotel.findById(req.params.id);
@@ -88,8 +89,6 @@ router.put("/:id", validateHotel, async (req, res) => {
   hotel.Facilities = req.body.Facilities;
   hotel.Status = req.body.Status;
   hotel.Cost = req.body.Cost;
-  hotel.Latitude = req.body.Latitude;
-  hotel.Longitude = req.body.Longitude;
   await hotel.save();
   return res.send(hotel);
 });
@@ -120,10 +119,12 @@ router.post("/", validateHotel, upload.single("file"), async (req, res) => {
     hotel.AvgRatings = 0.0;
     hotel.CountRatings = 0;
     await hotel.save();
+    // return res.send(hotel);
     return res.send("data");
   } catch (error) {
     console.log(error);
     res.send(error.message);
   }
+  //res.json({ filename: file.name, filePath: `/uploads/${file.name}` });
 });
 module.exports = router;

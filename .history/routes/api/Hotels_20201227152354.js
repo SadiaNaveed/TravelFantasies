@@ -120,10 +120,12 @@ router.post("/", validateHotel, upload.single("file"), async (req, res) => {
     hotel.AvgRatings = 0.0;
     hotel.CountRatings = 0;
     await hotel.save();
+    // return res.send(hotel);
     return res.send("data");
   } catch (error) {
     console.log(error);
     res.send(error.message);
   }
+  //res.json({ filename: file.name, filePath: `/uploads/${file.name}` });
 });
 module.exports = router;

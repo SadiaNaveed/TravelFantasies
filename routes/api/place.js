@@ -8,7 +8,7 @@ const multer = require("multer");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "C:Users/DeLL/Documents/GitHub/TravelFantasies/public/images/places");
+    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images/places");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
@@ -43,24 +43,22 @@ router.get("/", async (req, res) => {
   let page = Number(req.query.page ? req.query.page : 2);
   let perPage = Number(req.query.perPage ? req.query.perPage : 30);
   let skipRecords = perPage * (page - 1);
-  let places = await Place.find().skip(skipRecords).limit(perPage);
-  //let places = await Place.find();
+  //let places = await Place.find().skip(skipRecords).limit(perPage);
+  let places = await Place.find();
   return res.send(places);
 });
-
 
 // /* Update Record */
 router.put("/:id", upload.single("file"), async (req, res) => {
   let place = await Place.findById(req.params.id);
-  place.place_name = req.body.place_name;
-  place.City = req.body.City;
-  place.Description = req.body.Description;
+  // place.place_name = req.body.place_name;
+  // place.City = req.body.City;
+  // place.Description = req.body.Description;
   place.Image.data = fs.readFileSync(req.file.path);
   place.Image.contentType = req.file.mimetype;
   await place.save();
   return res.send(place);
 });
-
 
 /* Insert Record */
 router.post("/", upload.single("file"), async (req, res) => {

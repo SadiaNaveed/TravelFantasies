@@ -6,10 +6,10 @@ var { hotelBookings } = require("../../models/hotel_bookings");
 /* GET HotelBookings listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
-  //let page = Number(req.query.page ? req.query.page : 1);
-  // let perPage = Number(req.query.perPage ? req.query.perPage : 10);
-  // let skipRecords = perPage * (page - 1);
-  let bookings = await hotelBookings.find();
+  let page = Number(req.query.page ? req.query.page : 1);
+  let perPage = Number(req.query.perPage ? req.query.perPage : 10);
+  let skipRecords = perPage * (page - 1);
+  let bookings = await hotelBookings.find().skip(skipRecords).limit(perPage);
   return res.send(bookings);
 });
 
@@ -32,7 +32,6 @@ router.put("/:id", validateHotelBooking, async (req, res) => {
   let HotelBooking = await hotelBookings.findById(req.params.id);
   HotelBooking.Booking_Date = req.body.Booking_Date;
   HotelBooking.Room_id = req.body.Room_id;
-  HotelBooking.Hotel_id = req.body.Hotel_id;
   HotelBooking.Guest_id = req.body.Guest_id;
   HotelBooking.Arrival_Time = req.body.Arrival_Time;
   HotelBooking.Departure_Time = req.body.Departure_Time;
@@ -41,8 +40,6 @@ router.put("/:id", validateHotelBooking, async (req, res) => {
   HotelBooking.Check_in_Date = req.body.Check_in_Date;
   HotelBooking.Check_out_Date = req.body.Check_out_Date;
   HotelBooking.No_of_Guests = req.body.No_of_Guests;
-  HotelBooking.No_of_Rooms = req.body.No_of_Rooms;
-  HotelBooking.Status = req.body.Status;
   await HotelBooking.save();
   return res.send(HotelBooking);
 });
@@ -54,13 +51,11 @@ router.delete("/:id", async (req, res) => {
 });
 
 /* Insert Record */
-//validateHotelBooking
-router.post("/", async (req, res) => {
+router.post("/", validateHotelBooking, async (req, res) => {
   let HotelBooking = new hotelBookings();
   HotelBooking.Booking_Date = req.body.Booking_Date;
   HotelBooking.Room_id = req.body.Room_id;
   HotelBooking.Guest_id = req.body.Guest_id;
-  HotelBooking.Hotel_id = req.body.Hotel_id;
   HotelBooking.Arrival_Time = req.body.Arrival_Time;
   HotelBooking.Departure_Time = req.body.Departure_Time;
   HotelBooking.No_of_Days = req.body.No_of_Days;
@@ -68,9 +63,7 @@ router.post("/", async (req, res) => {
   HotelBooking.Check_in_Date = req.body.Check_in_Date;
   HotelBooking.Check_out_Date = req.body.Check_out_Date;
   HotelBooking.No_of_Guests = req.body.No_of_Guests;
-  HotelBooking.No_of_Rooms = req.body.No_of_Rooms;
-  HotelBooking.Status = "Completed";
   await HotelBooking.save();
-  return res.send("Booking Done");
+  return res.send(HotelBooking);
 });
 module.exports = router;

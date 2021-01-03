@@ -138,7 +138,7 @@ router.post("/", async (req, res) => {
     .then((customer) => {
       stripe.charges.create({
         amount: totalAmount,
-        currency: "PKR",
+        currency: "usd",
         customer: customer.id,
         receipt_email: token.email,
       });

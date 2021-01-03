@@ -127,7 +127,7 @@ router.delete("/:id", async (req, res) => {
 // validateHotel;
 
 router.post("/", async (req, res) => {
-  const totalAmount = req.body.totalamount;
+  const totalAmount = req.body.totalAmount;
   const token = req.body.token;
   console.log(req.body);
   stripe.customers
@@ -137,8 +137,8 @@ router.post("/", async (req, res) => {
     })
     .then((customer) => {
       stripe.charges.create({
-        amount: totalAmount,
-        currency: "PKR",
+        amount: 11400,
+        currency: "usd",
         customer: customer.id,
         receipt_email: token.email,
       });

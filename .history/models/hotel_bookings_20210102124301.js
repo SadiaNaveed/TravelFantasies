@@ -16,7 +16,6 @@ var HotelBookingSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Hotel",
   },
-  Status: String,
   Arrival_Time: String,
   Departure_Time: String,
   No_of_Days: Number,

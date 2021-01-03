@@ -37,7 +37,7 @@ const upload = multer({
   fileFilter: filefilter,
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", upload.single("file"), async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User with given Email already exist");
   user = new User();
@@ -45,7 +45,8 @@ router.post("/register", async (req, res) => {
   user.name = req.body.name;
   user.email = req.body.email;
   user.password = req.body.password;
-
+  hotel.Image.data = fs.readFileSync(req.file.path);
+  hotel.Image.contentType = req.file.mimetype;
   await user.generateHashedPassword();
   await user.save();
   let token = jwt.sign(

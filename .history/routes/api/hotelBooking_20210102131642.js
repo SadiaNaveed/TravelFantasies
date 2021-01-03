@@ -71,6 +71,6 @@ router.post("/", async (req, res) => {
   HotelBooking.No_of_Rooms = req.body.No_of_Rooms;
   HotelBooking.Status = "Completed";
   await HotelBooking.save();
-  return res.send("Booking Done");
+  return res.send(HotelBooking);
 });
 module.exports = router;

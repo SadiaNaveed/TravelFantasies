@@ -6,10 +6,10 @@ var { hotelBookings } = require("../../models/hotel_bookings");
 /* GET HotelBookings listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);
-  //let page = Number(req.query.page ? req.query.page : 1);
-  // let perPage = Number(req.query.perPage ? req.query.perPage : 10);
-  // let skipRecords = perPage * (page - 1);
-  let bookings = await hotelBookings.find();
+  let page = Number(req.query.page ? req.query.page : 1);
+  let perPage = Number(req.query.perPage ? req.query.perPage : 10);
+  let skipRecords = perPage * (page - 1);
+  let bookings = await hotelBookings.find().skip(skipRecords).limit(perPage);
   return res.send(bookings);
 });
 
@@ -71,6 +71,6 @@ router.post("/", async (req, res) => {
   HotelBooking.No_of_Rooms = req.body.No_of_Rooms;
   HotelBooking.Status = "Completed";
   await HotelBooking.save();
-  return res.send("Booking Done");
+  return res.send(HotelBooking);
 });
 module.exports = router;

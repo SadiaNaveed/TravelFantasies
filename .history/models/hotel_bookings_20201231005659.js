@@ -4,19 +4,11 @@ const { ValidationError } = require("@hapi/joi");
 
 var HotelBookingSchema = mongoose.Schema({
   Booking_Date: String,
-  Room_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Room",
-  },
+  Room_id: String,
   Guest_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  Hotel_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hotel",
-  },
-  Status: String,
   Arrival_Time: String,
   Departure_Time: String,
   No_of_Days: Number,
@@ -47,6 +39,5 @@ function validateHotelBooking(data) {
   });
   return schema.validate(data, { abortEarly: false });
 }
-
 module.exports.hotelBookings = hotelBookings;
 module.exports.validate = validateHotelBooking;

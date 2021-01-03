@@ -6,7 +6,6 @@ const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const multer = require("multer");
-const fs = require("fs");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -41,11 +40,9 @@ router.post("/register", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User with given Email already exist");
   user = new User();
-
   user.name = req.body.name;
   user.email = req.body.email;
   user.password = req.body.password;
-
   await user.generateHashedPassword();
   await user.save();
   let token = jwt.sign(

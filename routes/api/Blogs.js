@@ -1,5 +1,5 @@
 var express = require("express");
-//const validateBlog = require("../../middlewares/validateBlog");
+const validateBlog = require("../../middlewares/validateBlog");
 let router = express.Router();
 const multer = require("multer");
 var { Blog } = require("../../models/blogs");
@@ -9,10 +9,7 @@ const fs = require("fs");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(
-      null,
-      "C:/Users/DeLL/Documents/GitHub/TravelFantasies/public/images/blogs"
-    );
+    cb(null, "C:/Users/DeLL/Documents/GitHub/TravelFantasies/public/images/blogs");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
@@ -23,8 +20,7 @@ const filefilter = (req, file, cb) => {
   if (
     file.mimetype === "image/jpeg" ||
     file.mimetype === "image/jpg" ||
-    file.mimetype === "image/png" ||
-    file.mimetype === "video/mp4"
+    file.mimetype === "image/png" 
   ) {
     cb(null, true);
   } else {
@@ -42,6 +38,7 @@ const upload = multer({
 
 /* GET blogs list */
 router.get("/", async (req, res) => {
+  //res.send(["Pen", "Pencil"]);
   let page = Number(req.query.page ? req.query.page : 2);
   let perPage = Number(req.query.perPage ? req.query.perPage : 30);
   let skipRecords = perPage * (page - 1);
@@ -52,6 +49,8 @@ router.get("/", async (req, res) => {
 });
 
 /* GET single blog . */
+
+
 router.get("/:id", async (req, res) => {
   try {
     let blogs = await Blog.findById(req.params.id);
@@ -65,13 +64,11 @@ router.get("/:id", async (req, res) => {
 /* Update Record */
 router.put("/:id", upload.single("file"), async (req, res) => {
   let blogs = await Blog.findById(req.params.id);
-  blogs.Title = req.body.Title;
-  blogs.Description = req.body.Description;
-  blogs.Date = req.body.Date;
-  blogs.Image.data = fs.readFileSync(req.file.path);
+    blogs.Title = req.body.Title;
+    blogs.Description = req.body.Description;
+    blogs.Date = req.body.Date;
+    blogs.Image.data = fs.readFileSync(req.file.path);
   blogs.Image.contentType = req.file.mimetype;
-
-  //blogs.Date = fs.readFileSync(req.file.path);
   await blogs.save();
   return res.send(blogs);
 });
@@ -81,7 +78,7 @@ router.delete("/:id", async (req, res) => {
   let blogs = await Blog.findByIdAndDelete(req.params.id);
   return res.send("Blog has been Successfully Deleted");
 });
-
+/* Insert blog */
 router.post("/", upload.single("file"), async (req, res) => {
   try {
     const blogs = new Blog();
@@ -90,7 +87,7 @@ router.post("/", upload.single("file"), async (req, res) => {
     blogs.Category = req.body.Category;
     blogs.Date = req.body.Date;
     blogs.Image.data = fs.readFileSync(req.file.path);
-    blogs.Image.contentType = req.file.mimetype;
+  blogs.Image.contentType = req.file.mimetype;
     await blogs.save();
     return res.send(blogs);
   } catch (error) {

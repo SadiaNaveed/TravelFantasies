@@ -100,7 +100,7 @@ router.delete("/:id", async (req, res) => {
   return res.send("Hotel has been Successfully Removed");
 });
 
-router.post("/", validateHotel, upload.single("file"), async (req, res) => {
+router.post("/", upload.array("file", 2), async (req, res) => {
   try {
     const hotel = new Hotel();
     console.log(req.body);

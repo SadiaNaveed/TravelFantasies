@@ -114,6 +114,7 @@ router.post("/", validateHotel, upload.single("file"), async (req, res) => {
     hotel.Website = req.body.Website;
     hotel.Facilities = req.body.Facilities;
     hotel.Status = req.body.Status;
+    hotel.Cost = req.body.Cost;
     hotel.Latitude = req.body.Latitude;
     hotel.Longitude = req.body.Longitude;
     hotel.AvgRatings = 0.0;

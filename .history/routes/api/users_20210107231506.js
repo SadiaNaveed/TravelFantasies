@@ -81,18 +81,6 @@ router.post("/login", validateUserLogin, async (req, res) => {
   );
   res.send(token);
 });
-router.get("/guides", async (req, res) => {
-  let guides = await User.find({ role: "guide" });
-  res.contentType("json");
-  console.log(guides);
-  return res.send(guides);
-});
-router.get("/admins", async (req, res) => {
-  let admins = await User.find({ role: "admin" });
-  res.contentType("json");
-  console.log(admins);
-  return res.send(admins);
-});
 /* GET hotels listing. */
 router.get("/", async (req, res) => {
   //res.send(["Pen", "Pencil"]);

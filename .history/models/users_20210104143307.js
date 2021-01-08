@@ -25,14 +25,13 @@ function validateUser(data) {
     name: Joi.string().min(3).max(10).required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(3).max(10).required(),
-    role: Joi.string().required(),
   });
   return schema.validate(data, { abortEarly: false });
 }
 function validateUserLogin(data) {
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().required(),
+    password: Joi.string().min(3).max(10).required(),
   });
   return schema.validate(data, { abortEarly: false });
 }

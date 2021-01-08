@@ -82,16 +82,18 @@ router.post("/login", validateUserLogin, async (req, res) => {
   res.send(token);
 });
 router.get("/guides", async (req, res) => {
-  let guides = await User.find({ role: "guide" });
+  console.log(req.query.hotelname);
+  let hotels = await Hotel.find({ HotelName: req.query.hotelname });
   res.contentType("json");
-  console.log(guides);
-  return res.send(guides);
+  console.log(hotels);
+  return res.send(hotels);
 });
 router.get("/admins", async (req, res) => {
-  let admins = await User.find({ role: "admin" });
+  console.log(req.query.hotelname);
+  let hotels = await Hotel.find({ HotelName: req.query.hotelname });
   res.contentType("json");
-  console.log(admins);
-  return res.send(admins);
+  console.log(hotels);
+  return res.send(hotels);
 });
 /* GET hotels listing. */
 router.get("/", async (req, res) => {

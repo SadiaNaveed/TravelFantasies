@@ -100,15 +100,18 @@ router.delete("/:id", async (req, res) => {
   return res.send("Hotel has been Successfully Removed");
 });
 
-router.post("/", validateHotel, upload.single("file"), async (req, res) => {
+router.post("/", upload.array("file", 2), async (req, res) => {
   try {
     const hotel = new Hotel();
     console.log(req.body);
     hotel.HotelName = req.body.HotelName;
     hotel.Category = req.body.Category;
     hotel.Location = req.body.Location;
-    hotel.Image.data = fs.readFileSync(req.file.path);
-    hotel.Image.contentType = req.file.mimetype;
+    req.file.forEach((f) => {
+      hotel.Image.data = fs.readFileSync(f.path);
+      hotel.Image.contentType = f.mimetype;
+    });
+
     hotel.Address = req.body.Address;
     hotel.Contactno = req.body.Contactno;
     hotel.Website = req.body.Website;

@@ -5,10 +5,12 @@ const { ValidationError } = require("@hapi/joi");
 var HotelSchema = mongoose.Schema({
   HotelName: String,
   Location: String,
-  Image: {
-    data: Buffer,
-    contentType: String,
-  },
+  Image: [
+    {
+      data: Buffer,
+      contentType: String,
+    },
+  ],
   Category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "HotelCategory",

@@ -37,8 +37,8 @@ const upload = multer({
   },
   fileFilter: filefilter,
 });
-//
-router.post("/register", validateUser, async (req, res) => {
+//validateUser
+router.post("/register", async (req, res) => {
   console.log(req.body);
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User with given Email already exist");
@@ -80,18 +80,6 @@ router.post("/login", validateUserLogin, async (req, res) => {
     config.get("jwtPrivateKey")
   );
   res.send(token);
-});
-router.get("/guides", async (req, res) => {
-  let guides = await User.find({ role: "guide" });
-  res.contentType("json");
-  console.log(guides);
-  return res.send(guides);
-});
-router.get("/admins", async (req, res) => {
-  let admins = await User.find({ role: "admin" });
-  res.contentType("json");
-  console.log(admins);
-  return res.send(admins);
 });
 /* GET hotels listing. */
 router.get("/", async (req, res) => {

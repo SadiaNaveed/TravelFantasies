@@ -37,24 +37,23 @@ const upload = multer({
   },
   fileFilter: filefilter,
 });
-//
+
 router.post("/register", validateUser, async (req, res) => {
-  console.log(req.body);
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User with given Email already exist");
   user = new User();
-
+  console.log(req.body);
   user.name = req.body.name;
   user.email = req.body.email;
   user.password = req.body.password;
   user.role = req.body.role;
-  // if (req.file) {
-  //   user.Image.data = fs.readFileSync(req.file.path);
-  //   user.Image.contentType = req.file.mimetype;
-  // } else {
-  //   user.Image.data = null;
-  //   user.Image.contentType = null;
-  // }
+  if (req.file) {
+    user.Image.data = fs.readFileSync(req.file.path);
+    user.Image.contentType = req.file.mimetype;
+  } else {
+    user.Image.data = null;
+    user.Image.contentType = null;
+  }
 
   await user.generateHashedPassword();
   await user.save();
@@ -80,18 +79,6 @@ router.post("/login", validateUserLogin, async (req, res) => {
     config.get("jwtPrivateKey")
   );
   res.send(token);
-});
-router.get("/guides", async (req, res) => {
-  let guides = await User.find({ role: "guide" });
-  res.contentType("json");
-  console.log(guides);
-  return res.send(guides);
-});
-router.get("/admins", async (req, res) => {
-  let admins = await User.find({ role: "admin" });
-  res.contentType("json");
-  console.log(admins);
-  return res.send(admins);
 });
 /* GET hotels listing. */
 router.get("/", async (req, res) => {

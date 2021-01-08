@@ -99,23 +99,26 @@ router.delete("/:id", async (req, res) => {
   let hotel = await Hotel.findByIdAndDelete(req.params.id);
   return res.send("Hotel has been Successfully Removed");
 });
-
-router.post("/", validateHotel, upload.single("file"), async (req, res) => {
+// upload.array("file", 2),
+router.post("/", async (req, res) => {
   try {
     const hotel = new Hotel();
     console.log(req.body);
+
     hotel.HotelName = req.body.HotelName;
-    hotel.Category = req.body.Category;
-    hotel.Location = req.body.Location;
-    hotel.Image.data = fs.readFileSync(req.file.path);
-    hotel.Image.contentType = req.file.mimetype;
-    hotel.Address = req.body.Address;
-    hotel.Contactno = req.body.Contactno;
-    hotel.Website = req.body.Website;
-    hotel.Facilities = req.body.Facilities;
-    hotel.Status = req.body.Status;
-    hotel.Latitude = req.body.Latitude;
-    hotel.Longitude = req.body.Longitude;
+    // hotel.Category = req.body.Category;
+    // hotel.Location = req.body.Location;
+    for (let index = 0; index <= req.file; index++) {
+      hotel.Image[index].data = fs.readFileSync(req.file[index].path);
+      hotel.Image[index].contentType = req.file[index].mimetype;
+    }
+    // hotel.Address = req.body.Address;
+    // hotel.Contactno = req.body.Contactno;
+    // hotel.Website = req.body.Website;
+    // hotel.Facilities = req.body.Facilities;
+    // hotel.Status = req.body.Status;
+    // hotel.Latitude = req.body.Latitude;
+    // hotel.Longitude = req.body.Longitude;
     hotel.AvgRatings = 0.0;
     hotel.CountRatings = 0;
     await hotel.save();

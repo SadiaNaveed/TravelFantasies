@@ -182,7 +182,7 @@ router.post("/", upload.single("file"), async (req, res) => {
     hotel.CountRatings = 1;
   } else {
     hotel.AvgRatings = newAvg;
-    hotel.CountRatings = newNoReviews;
+    hotel.CountRatings = countUser + 1;
   }
 
   HotelReviews.Ratings = req.body.Ratings;

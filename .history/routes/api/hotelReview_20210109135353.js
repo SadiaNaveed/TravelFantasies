@@ -156,7 +156,7 @@ router.post("/", upload.single("file"), async (req, res) => {
         console.log(sum);
         //        avg = sum / countUser;
 
-        newRatings = sum - 0 + (req.body.Ratings - 0);
+        newRatings = sum + req.body.Ratings;
         console.log(req.body.Ratings);
         // console.log(sum);
         // console.log(avg);

@@ -19,23 +19,28 @@ var HotelSchema = mongoose.Schema({
   Facilities: String,
   Status: String,
   Cost: Number,
-  Ratings: Number,
   Latitude: Number,
   Longitude: Number,
+  AvgRatings: Number,
+  CountRatings: Number,
 });
 var Hotel = mongoose.model("Hotel", HotelSchema);
 
 function validateHotel(data) {
+  console.log(data);
   const schema = Joi.object({
-    HotelName: Joi.string(),
+    HotelName: Joi.string().required(),
+    // Category: Joi.required(),
+    // Image: Joi.required(),
     Location: Joi.string().required(),
     Address: Joi.string().required(),
-    Contactno: Joi.string(),
+    Contactno: Joi.string().required(),
     Website: Joi.string().required(),
     Facilities: Joi.string().required(),
-    Status: Joi.string(),
+    Status: Joi.string().required(),
     Cost: Joi.number().required(),
-    Ratings: Joi.number(),
+    Latitude: Joi.number().required(),
+    Longitude: Joi.number().required(),
   });
   return schema.validate(data, { abortEarly: false });
 }

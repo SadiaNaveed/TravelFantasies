@@ -10,16 +10,20 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/api/users");
 var blogsRouter = require("./routes/api/Blogs");
 var ToursRouter = require("./routes/api/Tours");
+// var GuideRouter = require("./routes/api/Guide");
 var hotelsRouter = require("./routes/api/Hotels");
 var hotelBookingRouter = require("./routes/api/hotelBooking");
-var tourCategoryRouter = require("./routes/api/tourCategory");
-var placesRouter = require("./routes/api/Place");
 var hotelCategoryRouter = require("./routes/api/hotelCategory");
+var tourCategoryRouter = require("./routes/api/tourCategory");
+var placesRouter = require("./routes/api/place");
 var roomCategoryRouter = require("./routes/api/roomCategory");
 var roomRouter = require("./routes/api/rooms");
 var blogCategoryRouter = require("./routes/api/blogCategory");
-
-// var bodyParser = require("body-parser");
+var hotelReviewRouter = require("./routes/api/hotelReview");
+var PackagesRouter = require("./routes/api/Packages");
+var TourBookingsRouter = require("./routes/api/TourBookings");
+var paymentRouter = require("./routes/api/Payment");
+var bodyParser = require("body-parser");
 // var fs = require("fs");
 // var path = require("path");
 //
@@ -34,6 +38,7 @@ app.set("view engine", "jade");
 
 app.use(logger("dev"));
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
@@ -48,6 +53,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/tours", ToursRouter);
+// app.use("/api/guide", GuideRouter);
 app.use("/api/hotels", hotelsRouter);
 app.use("/api/hotelBookings", hotelBookingRouter);
 app.use("/api/tourCategory", tourCategoryRouter);
@@ -57,7 +63,10 @@ app.use("/api/roomCategory", roomCategoryRouter);
 app.use("/api/rooms", roomRouter);
 app.use("/api/Blog", blogsRouter);
 app.use("/api/BlogCategory", blogCategoryRouter);
-
+app.use("/api/hotelReview", hotelReviewRouter);
+app.use("/api/Packages", PackagesRouter);
+app.use("/api/TourBookings", TourBookingsRouter);
+app.use("/api/payment", paymentRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

@@ -75,25 +75,23 @@ router.get("/:id", async (req, res) => {
 });
 
 /* Update Record */
-router.put("/:id", upload.single("file"), async (req, res) => {
+router.put("/:id", validateHotel, async (req, res) => {
   let hotel = await Hotel.findById(req.params.id);
-  console.log(req.body);
   hotel.HotelName = req.body.HotelName;
   hotel.Category = req.body.Category;
   hotel.Location = req.body.Location;
-  hotel.Image.data = hotel.Image.data;
-  hotel.Image.contentType = hotel.Image.contentType;
+  hotel.Image.data = fs.readFileSync(req.file.path);
+  hotel.Image.contentType = req.file.mimetype;
   hotel.Address = req.body.Address;
   hotel.Contactno = req.body.Contactno;
   hotel.Website = req.body.Website;
   hotel.Facilities = req.body.Facilities;
   hotel.Status = req.body.Status;
+  hotel.Cost = req.body.Cost;
   hotel.Latitude = req.body.Latitude;
   hotel.Longitude = req.body.Longitude;
-  hotel.AvgRatings = 0.0;
-  hotel.CountRatings = 0;
   await hotel.save();
-  return res.send("Hotel Updated");
+  return res.send(hotel);
 });
 
 /* Delete Record */
@@ -101,7 +99,7 @@ router.delete("/:id", async (req, res) => {
   let hotel = await Hotel.findByIdAndDelete(req.params.id);
   return res.send("Hotel has been Successfully Removed");
 });
-
+//validateHotel;
 router.post("/", upload.single("file"), async (req, res) => {
   try {
     const hotel = new Hotel();

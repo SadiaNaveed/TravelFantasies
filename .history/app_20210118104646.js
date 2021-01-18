@@ -23,7 +23,7 @@ var hotelReviewRouter = require("./routes/api/hotelReview");
 var PackagesRouter = require("./routes/api/Packages");
 var TourBookingsRouter = require("./routes/api/TourBookings");
 var paymentRouter = require("./routes/api/Payment");
-var bodyParser = require("body-parser");
+// var bodyParser = require("body-parser");
 // var fs = require("fs");
 // var path = require("path");
 //
@@ -38,8 +38,7 @@ app.set("view engine", "jade");
 
 app.use(logger("dev"));
 app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 

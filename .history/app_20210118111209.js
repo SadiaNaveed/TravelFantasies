@@ -38,8 +38,7 @@ app.set("view engine", "jade");
 
 app.use(logger("dev"));
 app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -54,7 +53,7 @@ app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/tours", ToursRouter);
 // app.use("/api/guide", GuideRouter);
-app.use("/api/hotels", hotelsRouter);
+app.use("/api/hotels", bodyParser.toString(), hotelsRouter);
 app.use("/api/hotelBookings", hotelBookingRouter);
 app.use("/api/tourCategory", tourCategoryRouter);
 app.use("/api/places", placesRouter);

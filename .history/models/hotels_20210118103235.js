@@ -27,6 +27,7 @@ var HotelSchema = mongoose.Schema({
 var Hotel = mongoose.model("Hotel", HotelSchema);
 
 function validateHotel(data) {
+  console.log(data);
   const schema = Joi.object({
     HotelName: Joi.string().required(),
     // Category: Joi.required(),

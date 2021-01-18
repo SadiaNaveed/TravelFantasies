@@ -1,6 +1,4 @@
-const { json } = require("body-parser");
 const { validate } = require("../models/hotels");
-
 function validateHotel(req, res, next) {
   console.log(req.body);
   let { error } = validate(req.body);

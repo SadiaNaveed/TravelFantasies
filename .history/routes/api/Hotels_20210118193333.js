@@ -78,22 +78,22 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", upload.single("file"), async (req, res) => {
   let hotel = await Hotel.findById(req.params.id);
   console.log(req.body);
-  hotel.HotelName = req.body.HotelName;
-  hotel.Category = req.body.Category;
-  hotel.Location = req.body.Location;
-  hotel.Image.data = hotel.Image.data;
-  hotel.Image.contentType = hotel.Image.contentType;
-  hotel.Address = req.body.Address;
-  hotel.Contactno = req.body.Contactno;
-  hotel.Website = req.body.Website;
-  hotel.Facilities = req.body.Facilities;
-  hotel.Status = req.body.Status;
-  hotel.Latitude = req.body.Latitude;
-  hotel.Longitude = req.body.Longitude;
-  hotel.AvgRatings = 0.0;
-  hotel.CountRatings = 0;
-  await hotel.save();
-  return res.send("Hotel Updated");
+  // hotel.HotelName = req.body.HotelName;
+  // hotel.Category = req.body.Category;
+  // hotel.Location = req.body.Location;
+  // hotel.Image.data = fs.readFileSync(req.file.path);
+  // hotel.Image.contentType = req.file.mimetype;
+  // hotel.Address = req.body.Address;
+  // hotel.Contactno = req.body.Contactno;
+  // hotel.Website = req.body.Website;
+  // hotel.Facilities = req.body.Facilities;
+  // hotel.Status = req.body.Status;
+  // hotel.Latitude = req.body.Latitude;
+  // hotel.Longitude = req.body.Longitude;
+  // hotel.AvgRatings = 0.0;
+  // hotel.CountRatings = 0;
+  // await hotel.save();
+  return res.send(hotel);
 });
 
 /* Delete Record */

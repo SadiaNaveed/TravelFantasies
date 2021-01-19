@@ -73,12 +73,11 @@ router.post("/register", validateUser, async (req, res) => {
 /* Update Record */
 router.put("/:id", async (req, res) => {
   let user = await User.findById(req.params.id);
-  console.log(req.body);
   user.name = req.body.name;
   user.email = req.body.email;
-  user.password = user.password;
+  user.password = req.body.password;
   user.role = user.role;
-  // await user.generateHashedPassword();
+  await user.generateHashedPassword();
   await user.save();
   return res.send("User Updated");
 });

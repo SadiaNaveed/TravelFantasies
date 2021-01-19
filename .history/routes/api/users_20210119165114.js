@@ -43,6 +43,7 @@ router.post("/register", validateUser, async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User with given Email already exist");
   user = new User();
+
   user.name = req.body.name;
   user.email = req.body.email;
   user.password = req.body.password;
@@ -71,14 +72,16 @@ router.post("/register", validateUser, async (req, res) => {
 });
 
 /* Update Record */
-router.put("/:id", async (req, res) => {
-  let user = await User.findById(req.params.id);
-  console.log(req.body);
+router.put("/:id", upload.single("file"), async (req, res) => {
+  let hotel = await User.findById(req.params.id);
+  user = new User();
+
   user.name = req.body.name;
   user.email = req.body.email;
-  user.password = user.password;
-  user.role = user.role;
-  // await user.generateHashedPassword();
+  user.password = req.body.password;
+  user.role = req.body.role;
+
+  await user.generateHashedPassword();
   await user.save();
   return res.send("User Updated");
 });

@@ -43,6 +43,7 @@ router.post("/register", validateUser, async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User with given Email already exist");
   user = new User();
+
   user.name = req.body.name;
   user.email = req.body.email;
   user.password = req.body.password;
@@ -71,16 +72,25 @@ router.post("/register", validateUser, async (req, res) => {
 });
 
 /* Update Record */
-router.put("/:id", async (req, res) => {
-  let user = await User.findById(req.params.id);
+router.put("/:id", upload.single("file"), async (req, res) => {
+  let hotel = await User.findById(req.params.id);
   console.log(req.body);
-  user.name = req.body.name;
-  user.email = req.body.email;
-  user.password = user.password;
-  user.role = user.role;
-  // await user.generateHashedPassword();
-  await user.save();
-  return res.send("User Updated");
+  // hotel.HotelName = req.body.HotelName;
+  // hotel.Category = req.body.Category;
+  // hotel.Location = req.body.Location;
+  // hotel.Image.data = hotel.Image.data;
+  // hotel.Image.contentType = hotel.Image.contentType;
+  // hotel.Address = req.body.Address;
+  // hotel.Contactno = req.body.Contactno;
+  // hotel.Website = req.body.Website;
+  // hotel.Facilities = req.body.Facilities;
+  // hotel.Status = req.body.Status;
+  // hotel.Latitude = req.body.Latitude;
+  // hotel.Longitude = req.body.Longitude;
+  // hotel.AvgRatings = 0.0;
+  // hotel.CountRatings = 0;
+  // await hotel.save();
+  return res.send("Hotel Updated");
 });
 
 /* Delete Record */

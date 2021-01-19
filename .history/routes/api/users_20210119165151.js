@@ -5,14 +5,56 @@ var bcrypt = require("bcryptjs");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const multer = require("multer");
+const fs = require("fs");
+const validateUser = require("../../middlewares/validateUser");
+const validateUserLogin = require("../../middlewares/validateUserLogin");
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images/hotels");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  },
+});
 
-router.post("/register", async (req, res) => {
+const filefilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/png"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
+  fileFilter: filefilter,
+});
+//
+router.post("/register", validateUser, async (req, res) => {
+  console.log(req.body);
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User with given Email already exist");
   user = new User();
   user.name = req.body.name;
   user.email = req.body.email;
   user.password = req.body.password;
+  user.role = req.body.role;
+  // if (req.file) {
+  //   user.Image.data = fs.readFileSync(req.file.path);
+  //   user.Image.contentType = req.file.mimetype;
+  // } else {
+  //   user.Image.data = null;
+  //   user.Image.contentType = null;
+  // }
+
   await user.generateHashedPassword();
   await user.save();
   let token = jwt.sign(
@@ -27,7 +69,26 @@ router.post("/register", async (req, res) => {
   // return res.send(_.pick(user, ["name", "email"]));
   return res.send(dataToReturn);
 });
-router.post("/login", async (req, res) => {
+
+/* Update Record */
+router.put("/:id", upload.single("file"), async (req, res) => {
+  let user = await User.findById(req.params.id);
+  user = new User();
+  user.name = req.body.name;
+  user.email = req.body.email;
+  user.password = req.body.password;
+  user.role = user.role;
+  await user.generateHashedPassword();
+  await user.save();
+  return res.send("User Updated");
+});
+
+/* Delete Record */
+router.delete("/:id", async (req, res) => {
+  let hotel = await User.findByIdAndDelete(req.params.id);
+  return res.send("User has been Successfully Removed");
+});
+router.post("/login", validateUserLogin, async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(400).send("User Not Registered");
   let isValid = await bcrypt.compare(req.body.password, user.password);
@@ -37,6 +98,18 @@ router.post("/login", async (req, res) => {
     config.get("jwtPrivateKey")
   );
   res.send(token);
+});
+router.get("/guides", async (req, res) => {
+  let guides = await User.find({ role: "guide" });
+  res.contentType("json");
+  console.log(guides);
+  return res.send(guides);
+});
+router.get("/admins", async (req, res) => {
+  let admins = await User.find({ role: "admin" });
+  res.contentType("json");
+  console.log(admins);
+  return res.send(admins);
 });
 /* GET hotels listing. */
 router.get("/", async (req, res) => {

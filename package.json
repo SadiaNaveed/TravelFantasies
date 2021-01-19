@@ -26,6 +26,7 @@
     "multer-gridfs-storage": "^4.2.0",
     "nodemon": "^2.0.6",
     "stripe": "^8.128.0",
-    "underscore-node": "^0.1.2"
+    "underscore-node": "^0.1.2",
+    "uuid": "^8.3.2"
   }
 }

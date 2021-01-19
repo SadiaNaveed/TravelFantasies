@@ -3,7 +3,7 @@ const Joi = require("@hapi/joi");
 const { ValidationError } = require("@hapi/joi");
 
 var BlogCategorySchema = mongoose.Schema({
-  Name: String,
+  CategoryName: String,
   Description: String,
 
 });
@@ -11,7 +11,7 @@ var BlogCategory = mongoose.model("BlogCategory", BlogCategorySchema, "BlogCateg
 
 function validateBlogCategory(data) {
   const schema = Joi.object({
-      Name: Joi.string(),
+    CategoryName: Joi.string(),
       Description: Joi.string(),
   });
   return schema.validate(data, { abortEarly: false });

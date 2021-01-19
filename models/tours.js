@@ -4,46 +4,57 @@ const { ValidationError } = require("@hapi/joi");
 const User = require("./users");
 
 var TourSchema = mongoose.Schema({
-  Title: String,
+  TourName: String,
   Location: String,
   Description: String,
    Images: {
      data: Buffer,
     contentType: String,
    },
-   Tour_Type: {
+   Category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Tour_Category",
+    ref: "TourCategory",
+  },
+
+  Status: {
+    type: Boolean,
+    enum: ["true", "false"],
+  },
+
+  Host_Id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+
+  Guide_Id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Guide",
   },
   
   Start_Date: String,
   End_Date: String,
   Arrival_Time:String,
   Departure_Time:String,
-  Status: {
-    type: Boolean,
-    enum: ["true", "false"],
-  },
-
+  no_of_days: Number,
   Total_Seats: Number,
   Available_Seats: Number,
   Cost: Number,
-  Ratings: Number,
-  no_of_days: Number,
-  Host_Id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
+  Facilities: String,
+  AvgRatings: Number,
+  CountRatings: Number,
 });
+  
+  
 
 var Tour = mongoose.model("Tour", TourSchema);
 
 function validateTour(data) {
   const schema = Joi.object({
-    Title: Joi.string(),
+    TourName: Joi.string(),
     Location: Joi.string().required(),
     Description: Joi.string(),
     Host_Id: Joi.string(),
+    Guide_Id: Joi.string(),
     Start_Date: Joi.required(),
     End_Date: Joi.required(),
     Arrival_Time: Joi.required(),
@@ -52,9 +63,10 @@ function validateTour(data) {
     Total_Seats: Joi.required(),
     Available_Seats: Joi.required(),
     Tour_Type: Joi.string(),
-    Ratings: Joi.number(),
+    Facilities: Joi.string().required(),
     Cost: Joi.required(),
     no_of_days: Joi.required(),
+    Ratings: Joi.number(),
   });
   return schema.validate(data, { abortEarly: false });
 }

@@ -9,11 +9,11 @@ var TourReviewSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Tour",
   },
-  Name: String,
-  // Image: {
-  //   data: Buffer,
-  //   contentType: String,
-  // },
+  Username: String,
+  Image: {
+    data: Buffer,
+    contentType: String,
+  },
   UserId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

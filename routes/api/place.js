@@ -7,7 +7,7 @@ const multer = require("multer");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "C:Users/DeLL/Documents/GitHub/TravelFantasies/public/images/places");
+    cb(null, "C:/Users/DeLL/Downloads/FYP2/TravelFantasiesFrontend-master/src");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
@@ -25,8 +25,6 @@ const filefilter = (req, file, cb) => {
     cb(null, false);
   }
 };
-
-//const upload = multer({ dest: "uploads/" });
 const upload = multer({
   storage: storage,
   limits: {
@@ -34,14 +32,20 @@ const upload = multer({
   },
   fileFilter: filefilter,
 });
-//.any('file')
-
 /* GET places listing. */
 router.get("/", async (req, res) => {
-  let page = Number(req.query.page ? req.query.page : 2);
-  let perPage = Number(req.query.perPage ? req.query.perPage : 30);
-  let skipRecords = perPage * (page - 1);
-  let places = await Place.find().skip(skipRecords).limit(perPage);
+  //let page = Number(req.query.page ? req.query.page : 2);
+  //let perPage = Number(req.query.perPage ? req.query.perPage : 30);
+ // let skipRecords = perPage * (page - 1);
+  let places = await Place.find();
+  return res.send(places);
+});
+
+router.get("/find", async (req, res) => {
+  console.log(req.query.place_name);
+  let places = await Place.find({ place_name: req.query.place_name });
+  res.contentType("json");
+  console.log(places);
   return res.send(places);
 });
 
@@ -70,11 +74,16 @@ router.put("/:id", upload.single("file"), async (req, res) => {
   return res.send(place);
 });
 
+/* Delete Record */
+router.delete("/:id", async (req, res) => {
+  let place = await Place.findByIdAndDelete(req.params.id);
+  return res.send("Place has been Successfully Removed");
+});
 
 /* Insert Record */
 router.post("/", upload.single("file"), async (req, res) => {
   let place = new Place();
-  place.place_name = req.body.place_name;
+  place.place_name = req.body.placeName;
   place.City = req.body.City;
   place.Description = req.body.Description;
   place.Image.data = fs.readFileSync(req.file.path);

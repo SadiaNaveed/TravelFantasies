@@ -33,7 +33,7 @@ router.get("/:id", async (req, res) => {
 /* Update Record */
 router.put("/:id", validateBlogCategory, async (req, res) => {
   let blogs = await BlogCategory.findById(req.params.id);
-  blogs.Name = req.body.Name;
+  blogs.CategoryName = req.body.CategoryName;
   blogs.Description = req.body.Description;
   await blogs.save();
   return res.send(blogs);
@@ -41,17 +41,17 @@ router.put("/:id", validateBlogCategory, async (req, res) => {
 
 /* Delete Record */
 router.delete("/:id", async (req, res) => {
-  let hotel = await HotelCategory.findByIdAndDelete(req.params.id);
-  return res.send(hotel);
+  let blogs = await BlogCategory.findByIdAndDelete(req.params.id);
+  return res.send(blogs);
 });
 
 router.post("/", validateBlogCategory, async (req, res) => {
   try {
     console.log(req.body);
-    const hotel = new HotelCategory();
-    hotel.CategoryName = req.body.CategoryName;
-    hotel.Description = req.body.Description;
-    await hotel.save();
+    const blog = new BlogCategory();
+    blog.CategoryName = req.body.CategoryName;
+    blog.Description = req.body.Description;
+    await blog.save();
     // return res.send(hotel);
     return res.send("data");
   } catch (error) {

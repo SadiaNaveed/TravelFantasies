@@ -21,6 +21,8 @@ var roomRouter = require("./routes/api/rooms");
 var blogCategoryRouter = require("./routes/api/blogCategory");
 var hotelReviewRouter = require("./routes/api/hotelReview");
 var PackagesRouter = require("./routes/api/Packages");
+var BookPackagesRouter = require("./routes/api/BookPackages");
+var packageReview = require("./routes/api/packageReview");
 var TourBookingsRouter = require("./routes/api/TourBookings");
 var paymentRouter = require("./routes/api/Payment");
 var bodyParser = require("body-parser");
@@ -42,6 +44,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "uploads")));
 
 // app.use(
 //   cors({
@@ -65,6 +68,8 @@ app.use("/api/Blog", blogsRouter);
 app.use("/api/BlogCategory", blogCategoryRouter);
 app.use("/api/hotelReview", hotelReviewRouter);
 app.use("/api/Packages", PackagesRouter);
+app.use("/api/BookPackages", BookPackagesRouter);
+app.use("/api/packageReview", packageReview);
 app.use("/api/TourBookings", TourBookingsRouter);
 app.use("/api/payment", paymentRouter);
 // catch 404 and forward to error handler

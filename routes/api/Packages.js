@@ -11,7 +11,8 @@ const { runInNewContext } = require("vm");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "C:/Users/sidra/Desktop/Backend/travel/public/images/hotels");
+    cb(null, "uploads/");
+    // cb(null, "E:/sadia/TravelFantasies-master/public/images/tours");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
@@ -72,17 +73,20 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", validatePackages, async (req, res) => {
   let packages = await Packages.findById(req.params.id);
   packages.PackageName = req.body.PackageName;
+  packages.PlaceName = req.body.PlaceName;
   packages.Cost = req.body.Cost;
+  packages.Discount = req.body.Discount;
   packages.Description = req.body.Description;
+  packages.Detail = req.body.Detail;
   packages.Meal = req.body.Meal;
   packages.Hotel = req.body.Hotel;
   packages.no_of_days = req.body.no_of_days;
   packages.AllowedPersons = req.body.AllowedPersons;
   packages.Location = req.body.Location;
   packages.Status = req.body.Status;
-  packages.Image.data = fs.readFileSync(req.file.path);
-  packages.Image.contentType = req.file.mimetype;
-  
+  packages.Images.data = fs.readFileSync(req.file.path);
+  packages.Images.contentType = req.file.mimetype;
+
   await packages.save();
   return res.send(packages);
 });
@@ -93,22 +97,33 @@ router.delete("/:id", async (req, res) => {
   return res.send("Packages has been Successfully Removed");
 });
 
+// router.post("/", async (req, res) => {
+//   console.log('----Testing----', req.body);
 
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", upload.array("photos", 6), async (req, res) => {
+  let imgPath = [];
+  req.files.forEach((n) => {
+    imgPath.push(n.path);
+  });
   try {
     const packages = new Packages();
     console.log(req.body);
     packages.PackageName = req.body.PackageName;
+    packages.PlaceName = req.body.PlaceName;
     packages.Cost = req.body.Cost;
+    packages.Discount = req.body.Discount;
     packages.Description = req.body.Description;
+    packages.Detail = req.body.Detail;
     packages.Meal = req.body.Meal;
     packages.Hotel = req.body.Hotel;
     packages.no_of_days = req.body.no_of_days;
     packages.AllowedPersons = req.body.AllowedPersons;
     packages.Location = req.body.Location;
     packages.Status = req.body.Status;
-    packages.Image.data = fs.readFileSync(req.file.path);
-    packages.Image.contentType = req.file.mimetype;
+    packages.Images = imgPath;
+
+    // packages.Images.data = fs.readFileSync(req.file.path);
+    // packages.Images.contentType = req.file.mimetype;
     packages.Ratings = 0;
     await packages.save();
     return res.send("data");
@@ -116,6 +131,5 @@ router.post("/", upload.single("file"), async (req, res) => {
     console.log(error);
     res.send(error.message);
   }
-  
 });
 module.exports = router;

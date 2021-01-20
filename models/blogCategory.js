@@ -5,14 +5,17 @@ const { ValidationError } = require("@hapi/joi");
 var BlogCategorySchema = mongoose.Schema({
   CategoryName: String,
   Description: String,
-
 });
-var BlogCategory = mongoose.model("BlogCategory", BlogCategorySchema, "BlogCategory");
+var BlogCategory = mongoose.model(
+  "BlogCategory",
+  BlogCategorySchema,
+  "BlogCategory"
+);
 
 function validateBlogCategory(data) {
   const schema = Joi.object({
     CategoryName: Joi.string(),
-      Description: Joi.string(),
+    Description: Joi.string(),
   });
   return schema.validate(data, { abortEarly: false });
 }

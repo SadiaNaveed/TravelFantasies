@@ -7,12 +7,6 @@ var TourSchema = mongoose.Schema({
   TourName: String,
   Location: String,
   Description: String,
-  Start_Date: String,
-  End_Date: String,
-  Arrival_Time: String,
-  Departure_Time: String,
-  no_of_days: Number,
-  Total_Seats: Number,
   Images: {
     data: Buffer,
     contentType: String,
@@ -37,6 +31,12 @@ var TourSchema = mongoose.Schema({
     ref: "Guide",
   },
 
+  Start_Date: String,
+  End_Date: String,
+  Arrival_Time: String,
+  Departure_Time: String,
+  no_of_days: Number,
+  Total_Seats: Number,
   Available_Seats: Number,
   Cost: Number,
   Facilities: String,
@@ -44,7 +44,7 @@ var TourSchema = mongoose.Schema({
   CountRatings: Number,
 });
 
-var Tour = mongoose.model("Tour", TourSchema);
+var Tours = mongoose.model("Tours", TourSchema, "Tours");
 
 function validateTour(data) {
   const schema = Joi.object({
@@ -68,5 +68,5 @@ function validateTour(data) {
   });
   return schema.validate(data, { abortEarly: false });
 }
-module.exports.Tour = Tour;
+module.exports.Tour = Tours;
 module.exports.validate = validateTour;

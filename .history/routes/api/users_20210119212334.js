@@ -5,7 +5,6 @@ var bcrypt = require("bcryptjs");
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const validateUserLogin = require("../../middlewares/validateUserLogin");
 
 router.post("/register", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });

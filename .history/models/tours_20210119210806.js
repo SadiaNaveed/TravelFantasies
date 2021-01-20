@@ -7,17 +7,11 @@ var TourSchema = mongoose.Schema({
   TourName: String,
   Location: String,
   Description: String,
-  Start_Date: String,
-  End_Date: String,
-  Arrival_Time: String,
-  Departure_Time: String,
-  no_of_days: Number,
-  Total_Seats: Number,
-  Images: {
-    data: Buffer,
+   Images: {
+     data: Buffer,
     contentType: String,
-  },
-  Category: {
+   },
+   Category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "TourCategory",
   },
@@ -36,13 +30,21 @@ var TourSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Guide",
   },
-
+  
+  Start_Date: String,
+  End_Date: String,
+  Arrival_Time:String,
+  Departure_Time:String,
+  no_of_days: Number,
+  Total_Seats: Number,
   Available_Seats: Number,
   Cost: Number,
   Facilities: String,
   AvgRatings: Number,
   CountRatings: Number,
 });
+  
+  
 
 var Tour = mongoose.model("Tour", TourSchema);
 
